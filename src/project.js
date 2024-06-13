@@ -35,12 +35,8 @@ function createProject(name, ...todoArray) {
         }
     };
 
-    const updateComplete = function (boolean) {
-        if (boolean === undefined) {
-            isComplete = isAllTodosComplete();
-        } else {
-            isComplete = boolean;
-        }
+    const updateCompleteBasedOnTodos = function (boolean) {
+        isComplete = isAllTodosComplete();
     }
 
     const isAllTodosComplete = function () {
@@ -54,7 +50,7 @@ function createProject(name, ...todoArray) {
 
     return {
         name,
-        updateComplete,
+        updateCompleteBasedOnTodos,
         sortTodos,
         addTodo,
         removeTodo,
