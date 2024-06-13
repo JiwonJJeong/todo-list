@@ -1,9 +1,13 @@
 // module strictly for displaying elements
+import { pageManager } from "./index.js";
+
 const renderManager = function (){
 
     const init = function(){
         renderBaseBackground();
         renderHeader();
+        renderSidebar();
+        renderDefaultContent();
     }
 
     const createElement = function(tag, classAttribute, innerText){
@@ -41,6 +45,10 @@ const renderManager = function (){
         const logo = createElement("h1","header logo","To Do List");
         const addProjectButton = createElement("button", "project button", "+");
         return {logo, addProjectButton};
+    }
+
+    const renderSidebar = function(){
+
     }
 
     return {init};

@@ -1,9 +1,10 @@
 // module for project that (can) hold todos //
 import {completeToggleable} from "./todo.js";
 
-function createProject(name, ...todoArray) {
+function createProject(name) {
 
     let isComplete = false;
+    let todoArray = [];
 
     const getTodoArray = function () {
         return todoArray;
