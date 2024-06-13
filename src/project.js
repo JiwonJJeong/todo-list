@@ -3,9 +3,7 @@ import {completeToggleable} from "./todo.js";
 
 function createProject(name, ...todoArray) {
 
-    let name = name;
     let isComplete = false;
-    let todoArray = todoArray;
 
     const getTodoArray = function () {
         return todoArray;
