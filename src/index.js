@@ -22,7 +22,7 @@ const pageManager = function(){
     }
 
     // use parameter project = null if you want the todo to have no project
-    const addTodo = function(project,title,description,dueDate,priority,...checklistArray){
+    const createAndAddTodo = function(project,title,description,dueDate,priority,...checklistArray){
         const todo = createTodo(title,description,dueDate,priority,...checklistArray);
         if (project !== null){
             if (!projects.includes(project)){
@@ -32,19 +32,22 @@ const pageManager = function(){
         } else{
             todosWithoutProject.push(todo);
         }
+        return todo;
     }
 
-    const addProject = function(name){
-        projects.push(createProject(name));
+    const createAndAddProject = function(name){
+        const createdProject = createProject(name);
+        projects.push(createdProject);
+        return createdProject;
     }
 
     const addExampleTodosandProjects = function(){
-        addTodo(null, "Test Todo1", "This todo has no project", "Test dueDate", 3, "Test check list 1", "Test check list 2");
-        const testProject = addProject("Test Project1");
-        addTodo(testProject, "Test Todo2", "This todo has a project", "Test dueDate", 3, "Test check list 1", "Test check list 2");
+        createAndAddTodo(null, "Test Todo1", "This todo has no project", "Test dueDate", 3, "Test check list 1", "Test check list 2");
+        const testProject = createAndAddProject("Test Project1");
+        createAndAddTodo(testProject, "Test Todo2", "This todo has a project", "Test dueDate", 3, "Test check list 1", "Test check list 2");
     }
 
-    return {getProjectsAndNakedTodos, addTodo, addProject, moveTodoToProject, removeTodoFromProject, addExampleTodosandProjects};
+    return {getProjectsAndNakedTodos, createAndAddTodo, createAndAddProject, moveTodoToProject, removeTodoFromProject, addExampleTodosandProjects};
 
 }();
 

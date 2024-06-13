@@ -7,7 +7,6 @@ const renderManager = function (){
         renderBaseBackground();
         renderHeader();
         renderSidebar();
-        renderDefaultContent();
     }
 
     const createElement = function(tag, classAttribute, innerText){
@@ -33,22 +32,40 @@ const renderManager = function (){
     let header;
     const renderHeader = function(){
         header = createElement("div", "header area");
-        const headerChildElements = Object.values(createHeaderChildElements());
-        for (let element of headerChildElements){
-            header.appendChild(element);
-        }
+        appendHeaderChildElements();
         baseBackground.appendChild(header);
         return header;
     }
 
-    const createHeaderChildElements = function(){
+    const appendHeaderChildElements = function(){
         const logo = createElement("h1","header logo","To Do List");
         const addProjectButton = createElement("button", "project button", "+");
-        return {logo, addProjectButton};
+        header.appendChild(logo);
+        header.appendChild(addProjectButton);
     }
 
+    let sidebar;
     const renderSidebar = function(){
+        sidebar = createElement("div","sidebar area");
+        const projectsAndTodosToDisplay = pageManager.getProjectsAndNakedTodos();
+        const projectsArray = projectsAndTodosToDisplay.projects;
+        const todosArray = projectsAndTodosToDisplay.todosWithoutProject;
+        for (let project of projectsArray){
+            appendProjectTab(project);
+        }
+        for (let todo of todosArray){
+            appendTodoTab(todo);
+        }
+    }
 
+    const appendProjectTab = function(projectToDisplay){
+        const projectBarArea = createElement("div","project-bar area");
+        const projectName = createElement("p","project name",projectToDisplay.name);
+    }
+
+    const appendTodoTab = function(todoToDisplay){
+        const todoBarArea = createElement("div","todo-bar area");
+        const todoName = createElement("p","todo name",todoToDisplay.name);
     }
 
     return {init};
