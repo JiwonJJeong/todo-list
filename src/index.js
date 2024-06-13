@@ -10,4 +10,4 @@ const pageManager = function(){
 }();
 
 const testTodo = createTodo("Test Title","Test Description","Test Date",3);
-renderManager.logTitle(testTodo);
+renderManager.init();

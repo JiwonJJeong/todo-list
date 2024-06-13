@@ -4,27 +4,34 @@ const renderManager = function (){
     const init = function(){
         renderBaseBackground();
         renderHeader();
-        renderNewButtons();
     }
 
     const createElement = function(tag, classAttribute, innerText){
         const createdElement = document.createElement(tag);
-        if (classAttribute !== undefined) {createdElement.classList.add(classAttribute)};
+        if (classAttribute !== undefined) {
+            const splitClassStringsArray = classAttribute.split(" ");
+            for (let singleClass of splitClassStringsArray){
+                createdElement.classList.add(singleClass);
+            }
+        };
         if (innerText !== undefined) {createdElement.innerText = innerText};
         return createdElement;
     }
 
+    let baseBackground;
     const renderBaseBackground = function(){
-        const baseBackground = createElement("div", "content area");
-        document.appendChild(baseBackground);
+        baseBackground = createElement("div", "content area");
+        const body = document.querySelector("body");
+        body.appendChild(baseBackground);
         return baseBackground;
     }
 
+    let header;
     const renderHeader = function(){
         const header = createElement("div", "header area");
-        const headerChildElements = createHeaderChildElements();
+        const headerChildElements = Object.values(createHeaderChildElements());
         for (let element of headerChildElements){
-            header.appendchild(element);
+            header.appendChild(element);
         }
         baseBackground.appendChild(header);
         return header;
@@ -32,9 +39,11 @@ const renderManager = function (){
 
     const createHeaderChildElements = function(){
         const logo = createElement("h1","header logo","To Do List");
-        const addProjectButton = createElements("button", "project button", "+");
+        const addProjectButton = createElement("button", "project button", "+");
         return {logo, addProjectButton};
     }
+
+    return {init};
 }();
 
 
