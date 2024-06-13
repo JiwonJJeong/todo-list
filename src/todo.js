@@ -11,13 +11,28 @@ function createTodo (title,description,dueDate,priority,...checklistArray){
         priority--;
     }
 
+    const getChecklistArray = function () {
+        return checklistArray;
+    }
+
+    const addChecklist = function (newChecklist) {
+        todoArray.push(newChecklist);
+    }
+
+    const removeChecklist = function (checklistToRemove) {
+        todoArray.pop(checklistToRemove);
+    }
+
+
     return {
         title,
         description,
         dueDate,
         priority,
         isComplete,
-        checklistArray,
+        getChecklistArray,
+        addChecklist,
+        removeChecklist,
         ...completeToggleable(),
         incrementPriority,
         decrementPriority,
