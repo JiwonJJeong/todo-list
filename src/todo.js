@@ -18,25 +18,25 @@ function createTodo (title,description,dueDate,priority,...checklistArray){
         priority,
         isComplete,
         checklistArray,
-        ...completeTogglable(),
+        ...completeToggleable(),
         incrementPriority,
         decrementPriority,
     }
 }
 
 function createChecklist(description) {
-    isComplete = false;
+    let isComplete = false;
 
     return {
         isComplete,
-        ...completeTogglable(),
+        ...completeToggleable(),
     }
 }
 
-function completeTogglable() {
+function completeToggleable() {
     return {
         toggleComplete: () => (this.isComplete = !this.isComplete),
     }
 }
 
-export {createTodo, createChecklist};
+export {createTodo, createChecklist, completeToggleable};
