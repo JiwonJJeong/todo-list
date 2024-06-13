@@ -28,7 +28,7 @@ const renderManager = function (){
 
     let header;
     const renderHeader = function(){
-        const header = createElement("div", "header area");
+        header = createElement("div", "header area");
         const headerChildElements = Object.values(createHeaderChildElements());
         for (let element of headerChildElements){
             header.appendChild(element);
