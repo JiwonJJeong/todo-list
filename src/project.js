@@ -19,20 +19,12 @@ function createProject(name, ...todoArray) {
         todoArray.pop(todoToRemove);
     }
 
-    // sort by priority only with 3 being highest, 1 being lowest
+    // sort by priority only with 3 being highest (and first), 1 being lowest
     const sortTodos = function () {
         todoArray.prototype.sort(comparePriority(a, b));
     }
     const comparePriority = function(a,b){
-        const priorityA = a.priority;
-        const priorityB = b.priority;
-        if (priorityA > priorityB) {
-            return -1;
-        } else if (priorityA < priorityB) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return b.priority - a.priority;
     };
 
     const updateCompleteBasedOnTodos = function (boolean) {
