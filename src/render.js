@@ -27,22 +27,16 @@ const renderManager = function (){
         baseBackground = createElement("div", "content area");
         const body = document.querySelector("body");
         body.appendChild(baseBackground);
-        return baseBackground;
     }
 
     let header;
     const renderHeader = function(){
         header = createElement("div", "header area");
-        appendHeaderChildElements();
-        baseBackground.appendChild(header);
-        return header;
-    }
-
-    const appendHeaderChildElements = function(){
         const logo = createElement("h1","header logo","To Do List");
         const addProjectButton = createElement("button", "project button", "+");
         header.appendChild(logo);
         header.appendChild(addProjectButton);
+        baseBackground.appendChild(header);
     }
 
     let sidebar;
@@ -52,7 +46,8 @@ const renderManager = function (){
         const projectsArray = projectsAndTodosToDisplay.projects;
         const todosArray = projectsAndTodosToDisplay.todosWithoutProject;
         for (let project of projectsArray){
-            appendProjectTab(project);
+            const projectTab = composeProjectTab(project);
+            sidebar.appendChild(projectTab);
         }
         for (let todo of todosArray){
             appendTodoTab(todo);
@@ -60,25 +55,28 @@ const renderManager = function (){
         baseBackground.appendChild(sidebar);
     }
 
-    const appendProjectTab = function(projectToDisplay){
+    const composeProjectTab = function(projectToDisplay){
+        const projectBarAndTodoArea = createElement("div","project-and-todo area");
         const projectBarArea = createElement("div","project-bar area");
         const projectName = createElement("p","project name",projectToDisplay.name);
         projectBarArea.appendChild(projectName);
-        sidebar.appendChild(projectBarArea);
+        projectBarAndTodoArea.appendChild(projectBarArea);
         // make sure to render todos of the project, if the project should be open
         if (projectToDisplay.getIsTodosShown()){
             const todosArray = projectToDisplay.getTodoArray();
             for (let todo of todosArray){
-                appendTodoTab(todo);
+                const todoTab = composeTodoTab(todo);
+                projectBarAndTodoArea.appendChild(todoTab);
             }
         }
+        return projectBarAndTodoArea;
     }
 
-    const appendTodoTab = function(todoToDisplay){
+    const composeTodoTab = function(todoToDisplay){
         const todoBarArea = createElement("div","todo-bar area");
         const todoName = createElement("p","todo name",todoToDisplay.name);
         todoBarArea.appendChild(todoName);
-        sidebar.appendChild(todoBarArea);
+        return todoBarArea;
     }
 
     let content;
@@ -97,10 +95,10 @@ const renderManager = function (){
         const todoTitle = createElement("h2","content title",todo.name);
         const todoDate = createElement("p","content date",todo.dueDate);
         const todoDescription = createElement("p","content description",todo.description);
-        const todoChecklist = appendChecklistElements(todo.getChecklistArray());
+        const todoChecklist = composeChecklistElements(todo.getChecklistArray());
     }
 
-    const appendChecklistElements = function(checklistArray){
+    const composeChecklistElements = function(checklistArray){
         const checklistArea = createElement("div","checklist area");
         for (let checklist of checklistArray){
             const checkIcon = createElement("div");
