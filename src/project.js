@@ -5,6 +5,7 @@ function createProject(name) {
 
     let isComplete = false;
     let todoArray = [];
+    let isTodosShown = false;
 
     const getTodoArray = function () {
         return todoArray;
@@ -39,6 +40,14 @@ function createProject(name) {
         return true;
     }
 
+    const toggleShowTodos = function(){
+        isTodosShown = !isTodosShown;
+    }
+
+    const getIsTodosShown = function(){
+        return isTodosShown;
+    }
+
     return {
         name,
         updateCompleteBasedOnTodos,
@@ -47,6 +56,8 @@ function createProject(name) {
         removeTodo,
         getTodoArray,
         ...completeToggleable,
+        toggleShowTodos,
+        getIsTodosShown,
     }
 }
 

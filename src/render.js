@@ -65,6 +65,13 @@ const renderManager = function (){
         const projectName = createElement("p","project name",projectToDisplay.name);
         projectBarArea.appendChild(projectName);
         sidebar.appendChild(projectBarArea);
+        // make sure to render todos of the project, if the project should be open
+        if (projectToDisplay.getIsTodosShown()){
+            const todosArray = projectToDisplay.getTodoArray();
+            for (let todo of todosArray){
+                appendTodoTab(todo);
+            }
+        }
     }
 
     const appendTodoTab = function(todoToDisplay){
@@ -86,7 +93,7 @@ const renderManager = function (){
         baseBackground.appendChild(content);
     }
 
-    const renderClickedTodo = function(todo){
+    const renderTodoContent = function(todo){
         const todoTitle = createElement("h2","content title",todo.name);
         const todoDate = createElement("p","content date",todo.dueDate);
         const todoDescription = createElement("p","content description",todo.description);
