@@ -1,6 +1,6 @@
 // module for todo and checklist//
 
-function createTodo (title,description,dueDate,priority,...checklistArray){
+function createTodo (name,description,dueDate,priority,...checklistArray){
     let isComplete = false;
 
     const incrementPriority = function(){
@@ -25,7 +25,7 @@ function createTodo (title,description,dueDate,priority,...checklistArray){
 
 
     return {
-        title,
+        name,
         description,
         dueDate,
         priority,

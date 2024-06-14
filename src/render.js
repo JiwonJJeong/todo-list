@@ -56,16 +56,21 @@ const renderManager = function (){
         for (let todo of todosArray){
             appendTodoTab(todo);
         }
+        baseBackground.appendChild(sidebar);
     }
 
     const appendProjectTab = function(projectToDisplay){
         const projectBarArea = createElement("div","project-bar area");
         const projectName = createElement("p","project name",projectToDisplay.name);
+        projectBarArea.appendChild(projectName);
+        sidebar.appendChild(projectBarArea);
     }
 
     const appendTodoTab = function(todoToDisplay){
         const todoBarArea = createElement("div","todo-bar area");
         const todoName = createElement("p","todo name",todoToDisplay.name);
+        todoBarArea.appendChild(todoName);
+        sidebar.appendChild(todoBarArea);
     }
 
     return {init};
