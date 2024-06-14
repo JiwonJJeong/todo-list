@@ -7,6 +7,7 @@ const renderManager = function (){
         renderBaseBackground();
         renderHeader();
         renderSidebar();
+        renderDefaultContent();
     }
 
     const createElement = function(tag, classAttribute, innerText){
@@ -71,6 +72,18 @@ const renderManager = function (){
         const todoName = createElement("p","todo name",todoToDisplay.name);
         todoBarArea.appendChild(todoName);
         sidebar.appendChild(todoBarArea);
+    }
+
+    let content;
+    const renderDefaultContent = function(){
+        content = createElement("div","content area");
+        const defaultText = createElement("p","default text","Let's get started! Choose a todo.");
+        const defaultSubText = createElement("p","default-sub text","Or create one!");
+        const defaultAddTodoButton = createElement("button","add-todo button","+");
+        content.appendChild(defaultText);
+        content.appendChild(defaultSubText);
+        content.appendChild(defaultAddTodoButton);
+        baseBackground.appendChild(content);
     }
 
     return {init};
