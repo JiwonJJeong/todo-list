@@ -45,6 +45,7 @@ function createChecklist(description) {
     return {
         isComplete,
         ...completeToggleable(),
+        description,
     }
 }
 

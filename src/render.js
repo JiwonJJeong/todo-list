@@ -86,6 +86,30 @@ const renderManager = function (){
         baseBackground.appendChild(content);
     }
 
+    const renderClickedTodo = function(todo){
+        const todoTitle = createElement("h2","content title",todo.name);
+        const todoDate = createElement("p","content date",todo.dueDate);
+        const todoDescription = createElement("p","content description",todo.description);
+        const todoChecklist = appendChecklistElements(todo.getChecklistArray());
+    }
+
+    const appendChecklistElements = function(checklistArray){
+        const checklistArea = createElement("div","checklist area");
+        for (let checklist of checklistArray){
+            const checkIcon = createElement("div");
+            const checkText = createElement("p","checklist text",checklist.description);
+            checklistArea.appendChild(checkIcon);
+            checklistArea.appendChild(checkText);
+        }
+        return checklistArea;
+    }
+
+    const clearContentArea = function(){
+        while(content.firstChild()){
+            content.removeChild(content.firstchild());
+        }
+    }
+
     return {init};
 }();
 
