@@ -50,7 +50,7 @@ const renderManager = function (){
             sidebar.appendChild(projectTab);
         }
         for (let todo of todosArray){
-            appendTodoTab(todo);
+            composeTodoTab(todo);
         }
         baseBackground.appendChild(sidebar);
     }
