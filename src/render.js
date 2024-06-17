@@ -144,7 +144,6 @@ const renderManager = function (){
         if (projectObject.getIsTodosShown()){
             const childTodos = projectObject.getTodoArray();
             let childBar = projectBar.nextSibling;
-            console.log(childTodos);
             for (let i = 0; i<childTodos.length;i++){
                 const childTodoObject = projectObject.getTodo(i);
                 bindChildTodoBar(childBar,childTodoObject,projectObject);
@@ -154,9 +153,8 @@ const renderManager = function (){
     }
 
     const toggleOpenCloseProject = function(projectBar, projectObject){
-        console.log("You are trying to open/close the project " + projectObject.name);
+        console.log("You are trying to open/close the project: " + projectObject.name);
         const projectBarAndTodoAreaToBeReplaced = projectBar.parentNode;
-        console.log(projectBarAndTodoAreaToBeReplaced);
         projectObject.toggleShowTodos();
         const newProjectBarAndTodoArea = composeProjectTab(projectObject);
         sidebar.replaceChild(newProjectBarAndTodoArea, projectBarAndTodoAreaToBeReplaced);
