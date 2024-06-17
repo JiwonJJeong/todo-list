@@ -24,7 +24,7 @@ const renderManager = function (){
 
     let baseBackground;
     const renderBaseBackground = function(){
-        baseBackground = createElement("div", "content area");
+        baseBackground = createElement("div", "base area");
         const body = document.querySelector("body");
         body.appendChild(baseBackground);
     }
@@ -50,14 +50,15 @@ const renderManager = function (){
             sidebar.appendChild(projectTab);
         }
         for (let todo of todosArray){
-            composeTodoTab(todo);
+            const todoTab = composeTodoTab(todo);
+            sidebar.appendChild(todoTab);
         }
         baseBackground.appendChild(sidebar);
     }
 
     const composeProjectTab = function(projectToDisplay){
-        const projectBarAndTodoArea = createElement("div","project-and-todo area");
-        const projectBarArea = createElement("div","project-bar area");
+        const projectBarAndTodoArea = createElement("div","project-and-child-todo area");
+        const projectBarArea = createElement("div","project bar area");
         const projectName = createElement("p","project name",projectToDisplay.name);
         projectBarArea.appendChild(projectName);
         projectBarAndTodoArea.appendChild(projectBarArea);
@@ -73,7 +74,7 @@ const renderManager = function (){
     }
 
     const composeTodoTab = function(todoToDisplay){
-        const todoBarArea = createElement("div","todo-bar area");
+        const todoBarArea = createElement("div","todo bar area");
         const todoName = createElement("p","todo name",todoToDisplay.name);
         todoBarArea.appendChild(todoName);
         return todoBarArea;

@@ -1,7 +1,41 @@
 /* custom variables, global resets, and changes to body */
 
+*{
+    --base-background-color: gray;
+}
+
 h1, h2, h3, p{
     margin:0;
     padding:0;
 }
 
+body{
+    display: flex;
+    justify-content: center;
+    margin-top: 10vh;
+}
+
+/* section and style page into 3 main sections */
+
+.base.area{
+    display:grid;
+    grid-template-rows: 100px auto;
+    grid-template-columns: 200px 1fr;
+    background-color: var(--base-background-color);
+    border-radius: 10px;
+}
+
+.header.area{
+    grid-column: 1/3;
+}
+
+/* stylize sidebar area*/
+.sidebar.area{
+    display:flex;
+    flex-direction: column;
+}
+
+.sidebar .bar.area{
+    padding: 20px;
+    border: solid 1px black;
+}
