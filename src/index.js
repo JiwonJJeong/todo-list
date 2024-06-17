@@ -4,6 +4,8 @@ import {renderManager} from "./render.js";
 import {createTodo} from "./todo.js";
 import {createProject} from "./project.js";
 
+import "./styles.css";
+
 const pageManager = function(){
     let projects = []
     let todosWithoutProject = [];
