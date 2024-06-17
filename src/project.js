@@ -11,6 +11,10 @@ function createProject(name) {
         return todoArray;
     }
 
+    const getTodo = function(index){
+        return todoArray[index];
+    }
+
     const addTodo = function (newTodo) {
         todoArray.push(newTodo);
     }
@@ -52,6 +56,7 @@ function createProject(name) {
         name,
         updateCompleteBasedOnTodos,
         sortTodos,
+        getTodo,
         addTodo,
         removeTodo,
         getTodoArray,

@@ -8,7 +8,10 @@ const renderManager = function (){
         renderHeader();
         renderSidebar();
         renderDefaultContent();
+        bindAllEvents();
     }
+
+    // functions related to displaying and rendering
 
     const createElement = function(tag, classAttribute, innerText){
         const createdElement = document.createElement(tag);
@@ -33,9 +36,7 @@ const renderManager = function (){
     const renderHeader = function(){
         header = createElement("div", "header area");
         const logo = createElement("h1","header logo","To Do List");
-        const addProjectButton = createElement("button", "project button", "+");
         header.appendChild(logo);
-        header.appendChild(addProjectButton);
         baseBackground.appendChild(header);
     }
 
@@ -67,9 +68,11 @@ const renderManager = function (){
             const todosArray = projectToDisplay.getTodoArray();
             for (let todo of todosArray){
                 const todoTab = composeTodoTab(todo);
+                todoTab.project = projectToDisplay;
                 projectBarAndTodoArea.appendChild(todoTab);
             }
         }
+        projectBarArea.project = projectToDisplay;
         return projectBarAndTodoArea;
     }
 
@@ -77,6 +80,7 @@ const renderManager = function (){
         const todoBarArea = createElement("div","todo bar area");
         const todoName = createElement("p","todo name",todoToDisplay.name);
         todoBarArea.appendChild(todoName);
+        todoBarArea.object = todoToDisplay;
         return todoBarArea;
     }
 
@@ -93,6 +97,7 @@ const renderManager = function (){
     }
 
     const renderTodoContent = function(todo){
+        clearContentArea();
         const todoTitle = createElement("h2","content title",todo.name);
         const todoDate = createElement("p","content date",todo.dueDate);
         const todoDescription = createElement("p","content description",todo.description);
@@ -114,6 +119,57 @@ const renderManager = function (){
         while(content.firstChild()){
             content.removeChild(content.firstchild());
         }
+    }
+
+    // all binding event listerner functions
+
+    const bindAllEvents = function(){
+        bindSidebarArea();
+        //bindContentArea();
+    }
+
+    const bindSidebarArea = function(){
+        const projectBars = sidebar.querySelectorAll(".project.bar.area");
+        for (let projectBar of projectBars){
+            bindProjectBar(projectBar,projectBar.project);
+        }
+        const nakedTodoBars = sidebar.querySelectorAll(".sidebar.area > .todo.bar.area");
+        for (let todoBar of nakedTodoBars){
+            bindNakedTodoBar(todoBar,todoBar.object);
+        }
+    }
+
+    const bindProjectBar = function(projectBar, projectObject){
+        projectBar.addEventListener("click", () => toggleOpenCloseProject(projectBar,projectObject));
+        if (projectObject.getIsTodosShown()){
+            const childTodos = projectObject.getTodoArray();
+            let childBar = projectBar.nextSibling;
+            console.log(childTodos);
+            for (let i = 0; i<childTodos.length;i++){
+                const childTodoObject = projectObject.getTodo(i);
+                bindChildTodoBar(childBar,childTodoObject,projectObject);
+                childBar = childBar.nextSibling;
+            }
+        }
+    }
+
+    const toggleOpenCloseProject = function(projectBar, projectObject){
+        console.log("You are trying to open/close the project " + projectObject.name);
+        const projectBarAndTodoAreaToBeReplaced = projectBar.parentNode;
+        console.log(projectBarAndTodoAreaToBeReplaced);
+        projectObject.toggleShowTodos();
+        const newProjectBarAndTodoArea = composeProjectTab(projectObject);
+        sidebar.replaceChild(newProjectBarAndTodoArea, projectBarAndTodoAreaToBeReplaced);
+        const newProjectBar = newProjectBarAndTodoArea.querySelector(".project.bar.area");
+        bindProjectBar(newProjectBar, projectObject);
+    }
+
+    const bindChildTodoBar = function(todoBarNode, childTodoObject, projectObject){
+        todoBarNode.addEventListener("click", () =>renderTodoContent(childTodoObject));
+    }
+
+    const bindNakedTodoBar = function(todoBar,todoObject){
+        todoBar.addEventListener("click", () => renderTodoContent(todoObject));
     }
 
     return {init};

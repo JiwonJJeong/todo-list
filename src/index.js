@@ -22,6 +22,8 @@ const pageManager = function(){
         project.removeTodo(todo);
         todosWithoutProject.push(todo);
     }
+
+
     
     // use parameter project = null if you want the todo to have no project
     const createAndAddTodo = function(project,title,description,dueDate,priority,...checklistArray){
@@ -47,6 +49,9 @@ const pageManager = function(){
         createAndAddTodo(null, "Test Todo1", "This todo has no project", "Test dueDate", 3, "Test check list 1", "Test check list 2");
         const testProject = createAndAddProject("Test Project1");
         createAndAddTodo(testProject, "Test Todo2", "This todo has a project", "Test dueDate", 3, "Test check list 1", "Test check list 2");
+        const testProject2 = createAndAddProject("Test Project 2");
+        createAndAddTodo(testProject2,"Test Todo3", "This todo has a project and should be shown on default", "Test dueDate", 3, "Test check list 1", "Test check list 2");
+        testProject2.toggleShowTodos();
     }
 
     return {getProjectsAndNakedTodos, createAndAddTodo, createAndAddProject, moveTodoToProject, removeTodoFromProject, addExampleTodosandProjects};
