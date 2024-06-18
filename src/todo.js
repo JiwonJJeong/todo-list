@@ -1,7 +1,16 @@
 // module for todo and checklist//
 
-function createTodo (name,description,dueDate,priority,...checklistArray){
+function createTodo (name,description,dueDate,priority,...checklistDescriptions){
     let isComplete = false;
+
+    // IIFE to initialize checklist array when todo is created
+    let checklistArray = [];
+    const initChecklist = function(){
+        for (let description of checklistDescriptions){
+            checklistArray.push(createChecklist(description));
+        }
+    }();
+
 
     const incrementPriority = function(){
         priority++;
@@ -16,11 +25,11 @@ function createTodo (name,description,dueDate,priority,...checklistArray){
     }
 
     const addChecklist = function (newChecklist) {
-        todoArray.push(newChecklist);
+        checklistArray.push(newChecklist);
     }
 
     const removeChecklist = function (checklistToRemove) {
-        todoArray.pop(checklistToRemove);
+        checklistArray.pop(checklistToRemove);
     }
 
 
