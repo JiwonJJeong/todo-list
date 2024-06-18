@@ -211,10 +211,18 @@ const renderManager = function (){
     }
 
     const bindSidebarArea = function(){
+        bindAllProjectsAndAnyChildTodos();
+        bindAllNakedTodos();
+    }
+
+    const bindAllProjectsAndAnyChildTodos = function(){
         const projectAndChildTodoBars = sidebar.querySelectorAll(".project-and-child-todo.area");
         for (let projectAndChildTodoBar of projectAndChildTodoBars){
             bindProjectAndChildTodosBar(projectAndChildTodoBar);
         }
+    }
+
+    const bindAllNakedTodos = function(){
         const nakedTodoBars = sidebar.querySelectorAll(".sidebar.area > .todo.bar.area");
         for (let todoBar of nakedTodoBars){
             bindTodoBar(todoBar);
@@ -261,6 +269,7 @@ const renderManager = function (){
     const rerenderPageAfterSubmit = function(newTodo){
         rerenderNakedTodosArea();
         closeNewTodoFormDialog();
+        bindAllNakedTodos();
         rerenderContentArea(newTodo);
     }
 
