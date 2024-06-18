@@ -1,5 +1,6 @@
 // module for project that (can) hold todos //
 import {completeToggleable} from "./todo.js";
+import {pageManager} from "./index.js";
 
 function createProject(name) {
 
@@ -25,11 +26,8 @@ function createProject(name) {
 
     // sort by priority only with 3 being highest (and first), 1 being lowest
     const sortTodos = function () {
-        todoArray.sort(comparePriority);
+        todoArray.sort(pageManager.comparePriority);
     }
-    const comparePriority = function(a,b){
-        return b.priority - a.priority;
-    };
 
     const updateCompleteBasedOnTodos = function (boolean) {
         isComplete = isAllTodosComplete();

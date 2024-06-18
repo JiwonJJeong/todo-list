@@ -14,6 +14,18 @@ const pageManager = function(){
         return {projects,todosWithoutProject}
     }
 
+    const sortProjects = function(){
+        projects.sort(comparePriority);
+    }
+
+    const sortNakedTodos = function(){
+        todosWithoutProject.sort(comparePriority);
+    }
+
+    const comparePriority = function(a,b){
+        return b.priority - a.priority;
+    };
+
     const moveTodoToProject = function(project, todo){
         project.addTodo(todo);
     }
@@ -41,6 +53,7 @@ const pageManager = function(){
             const dueDate = formElement.elements.dueDate.value;
             const priority = formElement.elements.priority.value;
             const newTodo = createAndAddTodo(null,name,description,dueDate,priority);
+            sortNakedTodos();
             renderManager.rerenderPageAfterSubmit(newTodo);
         }
     }
@@ -67,17 +80,19 @@ const pageManager = function(){
     }
 
     const addExampleTodosandProjects = function(){
-        createAndAddTodo(null, "Test Todo1", "This todo has no project", "Test dueDate", 3, "Test check list 1", "Test check list 2");
-        const testProject = createAndAddProject("Test Project1");
-        createAndAddTodo(testProject, "Test Todo2", "This todo has a project", "Test dueDate", 3, "Test check list 1", "Test check list 2");
-        const testProject2 = createAndAddProject("Test Project 2");
-        createAndAddTodo(testProject2,"Test Todo3", "This todo has a project and should be shown on default", "Test dueDate", 3, "Test check list 1", "Test check list 2");
+        createAndAddTodo(null, "Drive mom to airport", "This todo has no project and is high priority!", "Test dueDate", 3, "Check-in for flight", "Pick up mom at 8:00 AM");
+        createAndAddTodo(null, "Buy new camping gear", "This todo has no project and is low priority.", "Test dueDate", 1, "Buy new water bottle", "Buy more climbing rope", "Pack new stuff into camping bag");
+        const testProject = createAndAddProject("TOP Todo List Project");
+        createAndAddTodo(testProject, "Stylize with CSS", "This todo has a project.", "Test dueDate", 1, "Center elements", "Stylize form inputs", "Add icons", "Choose color palette");
+        createAndAddTodo(testProject, "Add ability to edit existing todos", "This todo has a project.", "Test dueDate", 3, );
+        const testProject2 = createAndAddProject("Woodworking Project");
+        createAndAddTodo(testProject2,"Brainstorm something to make", "This todo has a project and should be shown on default", "Test dueDate", 3, "Research inspiration ideas", "Check my current supplies");
         testProject2.toggleShowTodos();
     }
 
     return {getProjectsAndNakedTodos, createAndAddTodo, createAndAddProject,
         moveTodoToProject, removeTodoFromProject, addExampleTodosandProjects, toggleOpenCloseProjectTab,
-        processNewTodoFormSubmit,
+        processNewTodoFormSubmit, comparePriority,
     };
 
 }();
