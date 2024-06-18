@@ -47,7 +47,7 @@ const renderManager = function (){
         const projectsArray = projectsAndTodosToDisplay.projects;
         const todosArray = projectsAndTodosToDisplay.todosWithoutProject;
         for (let project of projectsArray){
-            const projectTab = composeProjectTab(project);
+            const projectTab = composeProjectAndChildTodosTab(project);
             sidebar.appendChild(projectTab);
         }
         for (let todo of todosArray){
@@ -57,7 +57,7 @@ const renderManager = function (){
         baseBackground.appendChild(sidebar);
     }
 
-    const composeProjectTab = function(projectToDisplay){
+    const composeProjectAndChildTodosTab = function(projectToDisplay){
         const projectBarAndTodoArea = createElement("div","project-and-child-todo area");
         const projectBarArea = createElement("div","project bar area");
         const projectName = createElement("p","project name",projectToDisplay.name);
@@ -72,6 +72,7 @@ const renderManager = function (){
                 projectBarAndTodoArea.appendChild(todoTab);
             }
         }
+        projectBarAndTodoArea.project = projectToDisplay;
         projectBarArea.project = projectToDisplay;
         return projectBarAndTodoArea;
     }
@@ -132,49 +133,44 @@ const renderManager = function (){
     }
 
     const bindSidebarArea = function(){
-        const projectBars = sidebar.querySelectorAll(".project.bar.area");
-        for (let projectBar of projectBars){
-            bindProjectBar(projectBar,projectBar.project);
+        const projectAndChildTodoBars = sidebar.querySelectorAll(".project-and-child-todo.area");
+        for (let projectAndChildTodoBar of projectAndChildTodoBars){
+            bindProjectAndChildTodosBar(projectAndChildTodoBar);
         }
         const nakedTodoBars = sidebar.querySelectorAll(".sidebar.area > .todo.bar.area");
         for (let todoBar of nakedTodoBars){
-            bindTodoBar(todoBar,todoBar.object);
+            bindTodoBar(todoBar);
         }
     }
 
-    const bindProjectBar = function(projectBar, projectObject){
-        projectBar.addEventListener("click", () => toggleOpenCloseProject(projectBar,projectObject));
-        if (projectObject.getIsTodosShown()){
-            const childTodos = projectObject.getTodoArray();
-            let childBar = projectBar.nextSibling;
-            for (let i = 0; i<childTodos.length;i++){
-                const childTodoObject = projectObject.getTodo(i);
-                bindTodoBar(childBar,childTodoObject);
-                childBar = childBar.nextSibling;
+    const bindProjectAndChildTodosBar = function(projectAndChildTodosNode){
+        const projectBarNode = projectAndChildTodosNode.querySelector(".project.bar.area");
+        projectBarNode.addEventListener("click", () => pageManager.toggleOpenCloseProjectTab(projectAndChildTodosNode));
+        if (projectBarNode.project.getIsTodosShown()){
+            let childBarNode = projectBarNode.nextSibling;
+            while (childBarNode !== null){
+                bindTodoBar(childBarNode);
+                childBarNode = childBarNode.nextSibling;
             }
         }
     }
 
-    const toggleOpenCloseProject = function(projectBar, projectObject){
-        console.log("You are trying to open/close the project: " + projectObject.name);
-        const projectBarAndTodoAreaToBeReplaced = projectBar.parentNode;
-        projectObject.toggleShowTodos();
-        const newProjectBarAndTodoArea = composeProjectTab(projectObject);
-        sidebar.replaceChild(newProjectBarAndTodoArea, projectBarAndTodoAreaToBeReplaced);
-        const newProjectBar = newProjectBarAndTodoArea.querySelector(".project.bar.area");
-        bindProjectBar(newProjectBar, projectObject);
+    const bindTodoBar = function(todoBar){
+        todoBar.addEventListener("click", () =>rerenderContentArea(todoBar.object));
     }
 
-    const bindTodoBar = function(todoBar,todoObject){
-        todoBar.addEventListener("click", () =>replaceContentWithTodoContent(todoObject));
-    }
-
-    const replaceContentWithTodoContent = function(todoObject){
+    const rerenderContentArea = function(todoObject){
         clearContentArea();
         renderTodoContent(todoObject);
     }
 
-    return {init};
+    const rerenderProjectAndChildTodosArea = function (projectAndChildTodosAreaNode){
+        const newNode = composeProjectAndChildTodosTab(projectAndChildTodosAreaNode.project);
+        sidebar.replaceChild(newNode, projectAndChildTodosAreaNode);
+        bindProjectAndChildTodosBar(newNode);
+    }
+
+    return {init, rerenderProjectAndChildTodosArea};
 }();
 
 

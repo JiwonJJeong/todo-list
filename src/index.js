@@ -23,6 +23,13 @@ const pageManager = function(){
         todosWithoutProject.push(todo);
     }
 
+    const toggleOpenCloseProjectTab = function(projectAndChildTodosAreaNode){
+        const projectObject = projectAndChildTodosAreaNode.project;
+        console.log("You are trying to open/close the project: " + projectObject.name);
+        projectObject.toggleShowTodos();
+        renderManager.rerenderProjectAndChildTodosArea(projectAndChildTodosAreaNode);
+    }
+
 
     
     // use parameter project = null if you want the todo to have no project
@@ -54,7 +61,7 @@ const pageManager = function(){
         testProject2.toggleShowTodos();
     }
 
-    return {getProjectsAndNakedTodos, createAndAddTodo, createAndAddProject, moveTodoToProject, removeTodoFromProject, addExampleTodosandProjects};
+    return {getProjectsAndNakedTodos, createAndAddTodo, createAndAddProject, moveTodoToProject, removeTodoFromProject, addExampleTodosandProjects, toggleOpenCloseProjectTab};
 
 }();
 
