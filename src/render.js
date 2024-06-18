@@ -26,7 +26,7 @@ const renderManager = function (){
         return createdElement;
     }
 
-    const createLabelAndInput = function(id, type = "text", labelText, value){
+    const createLabelAndInput = function(id, type = "text", labelText, value, requiredBoolean){
         const label = document.createElement("label");
         label.innerText = labelText;
         label.for = id;
@@ -34,8 +34,11 @@ const renderManager = function (){
         input.type = type;
         input.id = id;
         input.name = id;
-        if (value !== undefined){
+        if (value !== undefined && value !== null){
             input.value = value;
+        }
+        if (requiredBoolean === true){
+            input.setAttribute("required","");
         }
         return {label, input};
     }
@@ -171,7 +174,7 @@ const renderManager = function (){
         for (let element of todoFormElementsArray){
             todoForm.appendChild(element);
         }
-        const submitButton = createElement("button","submit button","Submit");
+        const submitButton = createElement("input","submit button","Submit");
         submitButton.type = "submit";
         todoForm.appendChild(submitButton);
         todoFormDialog.appendChild(todoForm);
@@ -179,7 +182,7 @@ const renderManager = function (){
     }
 
     const composeTodoFormElements = function(){
-        const nameFields = composeContainedFieldElement(createLabelAndInput("name","text","Title"));
+        const nameFields = composeContainedFieldElement(createLabelAndInput("name","text","Title*", null, true));
         const descriptionFields = composeContainedFieldElement(createLabelAndInput("description","text","Description"));
         const dueDateFields = composeContainedFieldElement(createLabelAndInput("dueDate","date","Due Date"));
         const priorityQuestion = composePriorityRadioInput();
@@ -188,8 +191,8 @@ const renderManager = function (){
 
     const composePriorityRadioInput = function(){
         const priorityQuestionContainer = createElement("div","priority question area");
-        const priorityRadioQuestionText = createElement("p","priority text","Priority");
-        const priorityHighRadioFields = createLabelAndInput("priority","radio", "High",3);
+        const priorityRadioQuestionText = createElement("p","priority text","Priority*");
+        const priorityHighRadioFields = createLabelAndInput("priority","radio", "High",3, true);
         const priorityMediumRadioFields = createLabelAndInput("priority","radio","Medium",2);
         const priorityLowRadioFields = createLabelAndInput("priority","radio","Low",1);
         priorityQuestionContainer.append(priorityRadioQuestionText,

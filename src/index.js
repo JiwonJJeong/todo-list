@@ -31,13 +31,18 @@ const pageManager = function(){
     }
 
     const processNewTodoFormSubmit = function(event, formElement){
-        event.preventDefault();
-        const name = formElement.elements.name.value;
-        const description = formElement.elements.description.value;
-        const dueDate = formElement.elements.dueDate.value;
-        const priority = formElement.elements.priority.value;
-        const newTodo = createAndAddTodo(null,name,description,dueDate,priority);
-        renderManager.rerenderPageAfterSubmit(newTodo);
+        let isFormValid = formElement.checkValidity();
+        if(!isFormValid){
+            formElement.reportValidity();
+        } else{
+            event.preventDefault();
+            const name = formElement.elements.name.value;
+            const description = formElement.elements.description.value;
+            const dueDate = formElement.elements.dueDate.value;
+            const priority = formElement.elements.priority.value;
+            const newTodo = createAndAddTodo(null,name,description,dueDate,priority);
+            renderManager.rerenderPageAfterSubmit(newTodo);
+        }
     }
     
     // use parameter project = null if you want the todo to have no project
