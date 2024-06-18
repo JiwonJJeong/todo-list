@@ -18,6 +18,7 @@ const pageManager = function(){
         const project = projectAndChildNode.project;
         const index = projects.indexOf(project);
         if (index >= 1){
+            renderManager.swapProjectAndChildTodosAreas(projectAndChildNode, projectAndChildNode.previousSibling);
             swapArrayElements(projects, index-1, index);
         } else{
             console.log("This project is as high as it can be!");
@@ -28,6 +29,7 @@ const pageManager = function(){
         const project = projectAndChildNode.project;
         const index = projects.indexOf(project);
         if (index <= projects.length){
+            renderManager.swapProjectAndChildTodosAreas(projectAndChildNode, projectAndChildNode.nextSibling);
             swapArrayElements(projects, index, index+1);
         } else{
             console.log("This project is as low as it can be!");
@@ -115,7 +117,7 @@ const pageManager = function(){
 
     return {getProjectsAndNakedTodos, createAndAddTodo, createAndAddProject,
         moveTodoToProject, removeTodoFromProject, addExampleTodosandProjects, toggleOpenCloseProjectTab,
-        processNewTodoFormSubmit, comparePriority,
+        processNewTodoFormSubmit, comparePriority, moveProjectNodeUp, moveProjectNodeDown,
     };
 
 }();
