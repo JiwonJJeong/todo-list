@@ -25,7 +25,7 @@ function createProject(name) {
 
     // sort by priority only with 3 being highest (and first), 1 being lowest
     const sortTodos = function () {
-        todoArray.prototype.sort(comparePriority(a, b));
+        todoArray.sort(comparePriority);
     }
     const comparePriority = function(a,b){
         return b.priority - a.priority;

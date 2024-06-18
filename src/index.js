@@ -30,7 +30,15 @@ const pageManager = function(){
         renderManager.rerenderProjectAndChildTodosArea(projectAndChildTodosAreaNode);
     }
 
-
+    const processNewTodoFormSubmit = function(event, formElement){
+        event.preventDefault();
+        const name = formElement.elements.name.value;
+        const description = formElement.elements.description.value;
+        const dueDate = formElement.elements.dueDate.value;
+        const priority = formElement.elements.priority.value;
+        const newTodo = createAndAddTodo(null,name,description,dueDate,priority);
+        renderManager.rerenderPageAfterSubmit(newTodo);
+    }
     
     // use parameter project = null if you want the todo to have no project
     const createAndAddTodo = function(project,title,description,dueDate,priority,...checklistArray){
@@ -40,6 +48,7 @@ const pageManager = function(){
                 alert("You are trying to add a todo to a nonexisting project");
             }
             moveTodoToProject(project, todo);
+            project.sortTodos();
         } else{
             todosWithoutProject.push(todo);
         }
@@ -61,7 +70,10 @@ const pageManager = function(){
         testProject2.toggleShowTodos();
     }
 
-    return {getProjectsAndNakedTodos, createAndAddTodo, createAndAddProject, moveTodoToProject, removeTodoFromProject, addExampleTodosandProjects, toggleOpenCloseProjectTab};
+    return {getProjectsAndNakedTodos, createAndAddTodo, createAndAddProject,
+        moveTodoToProject, removeTodoFromProject, addExampleTodosandProjects, toggleOpenCloseProjectTab,
+        processNewTodoFormSubmit,
+    };
 
 }();
 

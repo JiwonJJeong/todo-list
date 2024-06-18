@@ -160,6 +160,10 @@ const renderManager = function (){
         newTodoFormDialog.showModal();
     }
 
+    const closeNewTodoFormDialog = function(){
+        newTodoFormDialog.close();
+    }
+
     const composeNewTodoFormDialog = function(){
         const todoFormDialog = document.createElement("dialog");
         const todoForm = document.createElement("form");
@@ -167,6 +171,9 @@ const renderManager = function (){
         for (let element of todoFormElementsArray){
             todoForm.appendChild(element);
         }
+        const submitButton = createElement("button","submit button","Submit");
+        submitButton.type = "submit";
+        todoForm.appendChild(submitButton);
         todoFormDialog.appendChild(todoForm);
         return todoFormDialog;
     }
@@ -197,6 +204,7 @@ const renderManager = function (){
     const bindAllEvents = function(){
         bindSidebarArea();
         bindContentArea();
+        bindTodoFormDialogArea();
     }
 
     const bindSidebarArea = function(){
@@ -237,12 +245,41 @@ const renderManager = function (){
         bindProjectAndChildTodosBar(newNode);
     }
 
+    // not DRY at this function, room for improvement?
+    const rerenderNakedTodosArea = function(){
+        clearNakedTodoBars();
+        const todosArray = pageManager.getProjectsAndNakedTodos().todosWithoutProject;
+        for (let todo of todosArray){
+            const todoTab = composeTodoTab(todo);
+            sidebar.appendChild(todoTab);
+        }
+    }
+
+    const rerenderPageAfterSubmit = function(newTodo){
+        rerenderNakedTodosArea();
+        closeNewTodoFormDialog();
+        rerenderContentArea(newTodo);
+    }
+
+    const clearNakedTodoBars = function(){
+        const nakedTodoAreaNodes = document.querySelectorAll(".sidebar.area > .todo.bar.area");
+        for (let node of nakedTodoAreaNodes){
+            sidebar.removeChild(node);
+        }
+    }
+
     const bindContentArea = function(){
         const addTodoButton = content.querySelector(".add-todo.button");
         addTodoButton.addEventListener("click", () => showNewTodoFormDialog());
     }
 
-    return {init, rerenderProjectAndChildTodosArea};
+    const bindTodoFormDialogArea = function(){
+        const submitButton = newTodoFormDialog.querySelector(".submit.button");
+        const todoForm = newTodoFormDialog.querySelector("form");
+        submitButton.addEventListener("click", (e) => pageManager.processNewTodoFormSubmit(e, todoForm));
+    }
+
+    return {init, rerenderProjectAndChildTodosArea, rerenderPageAfterSubmit};
 }();
 
 
