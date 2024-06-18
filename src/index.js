@@ -14,8 +14,31 @@ const pageManager = function(){
         return {projects,todosWithoutProject}
     }
 
-    const sortProjects = function(){
-        projects.sort(comparePriority);
+    const moveProjectNodeUp = function(projectAndChildNode){
+        const project = projectAndChildNode.project;
+        const index = projects.indexOf(project);
+        if (index >= 1){
+            swapArrayElements(projects, index-1, index);
+        } else{
+            console.log("This project is as high as it can be!");
+        }
+    }
+
+    const moveProjectNodeDown = function(projectAndChildNode){
+        const project = projectAndChildNode.project;
+        const index = projects.indexOf(project);
+        if (index <= projects.length){
+            swapArrayElements(projects, index, index+1);
+        } else{
+            console.log("This project is as low as it can be!");
+        }
+    }
+
+    const swapArrayElements = function(array, index1, index2){
+        const firstElementHolder = array[index1];
+        delete array[index1];
+        array[index1] = array[index2];
+        array[index2] = firstElementHolder;
     }
 
     const sortNakedTodos = function(){
