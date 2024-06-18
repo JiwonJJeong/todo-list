@@ -97,11 +97,14 @@ const renderManager = function (){
     }
 
     const renderTodoContent = function(todo){
-        clearContentArea();
         const todoTitle = createElement("h2","content title",todo.name);
         const todoDate = createElement("p","content date",todo.dueDate);
         const todoDescription = createElement("p","content description",todo.description);
         const todoChecklist = composeChecklistElements(todo.getChecklistArray());
+        content.appendChild(todoTitle);
+        content.appendChild(todoDate);
+        content.appendChild(todoDescription);
+        content.appendChild(todoChecklist);
     }
 
     const composeChecklistElements = function(checklistArray){
@@ -116,8 +119,8 @@ const renderManager = function (){
     }
 
     const clearContentArea = function(){
-        while(content.firstChild()){
-            content.removeChild(content.firstchild());
+        while(content.firstChild){
+            content.removeChild(content.firstChild);
         }
     }
 
@@ -135,7 +138,7 @@ const renderManager = function (){
         }
         const nakedTodoBars = sidebar.querySelectorAll(".sidebar.area > .todo.bar.area");
         for (let todoBar of nakedTodoBars){
-            bindNakedTodoBar(todoBar,todoBar.object);
+            bindTodoBar(todoBar,todoBar.object);
         }
     }
 
@@ -146,7 +149,7 @@ const renderManager = function (){
             let childBar = projectBar.nextSibling;
             for (let i = 0; i<childTodos.length;i++){
                 const childTodoObject = projectObject.getTodo(i);
-                bindChildTodoBar(childBar,childTodoObject,projectObject);
+                bindTodoBar(childBar,childTodoObject);
                 childBar = childBar.nextSibling;
             }
         }
@@ -162,12 +165,13 @@ const renderManager = function (){
         bindProjectBar(newProjectBar, projectObject);
     }
 
-    const bindChildTodoBar = function(todoBarNode, childTodoObject, projectObject){
-        todoBarNode.addEventListener("click", () =>renderTodoContent(childTodoObject));
+    const bindTodoBar = function(todoBar,todoObject){
+        todoBar.addEventListener("click", () =>replaceContentWithTodoContent(todoObject));
     }
 
-    const bindNakedTodoBar = function(todoBar,todoObject){
-        todoBar.addEventListener("click", () => renderTodoContent(todoObject));
+    const replaceContentWithTodoContent = function(todoObject){
+        clearContentArea();
+        renderTodoContent(todoObject);
     }
 
     return {init};
