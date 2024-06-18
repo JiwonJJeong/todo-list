@@ -147,9 +147,14 @@ const renderManager = function (){
 
     // codes for dialogs. Use dialogs for new todo forms
 
+    let newTodoFormDialog;
     const prerenderDialogs = function(){
-        const newTodoFormDialog = composeNewTodoFormDialog();
+        newTodoFormDialog = composeNewTodoFormDialog();
         baseBackground.appendChild(newTodoFormDialog);
+    }
+
+    const showNewTodoFormDialog = function(){
+        newTodoFormDialog.showModal();
     }
 
     const composeNewTodoFormDialog = function(){
@@ -231,7 +236,7 @@ const renderManager = function (){
 
     const bindContentArea = function(){
         const addTodoButton = content.querySelector(".add-todo.button");
-        addTodoButton.addEventListener("click", () => renderNewTodoForm());
+        addTodoButton.addEventListener("click", () => showNewTodoFormDialog());
     }
 
     return {init, rerenderProjectAndChildTodosArea};
