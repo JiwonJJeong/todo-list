@@ -66,9 +66,14 @@ const renderManager = function (){
         baseBackground.appendChild(header);
     }
 
+    // displaying and rendering sidebar
+
     let sidebar;
     const renderSidebar = function(){
         sidebar = createElement("div","sidebar area");
+        const newDropdown = composeNewDropdown();
+        sidebar.appendChild(newDropdown.dropdownButton);
+        sidebar.appendChild(newDropdown.newButtonContainer);
         const projectsAndTodosToDisplay = pageManager.getProjectsAndNakedTodos();
         const projectsArray = projectsAndTodosToDisplay.projects;
         const todosArray = projectsAndTodosToDisplay.todosWithoutProject;
@@ -81,6 +86,31 @@ const renderManager = function (){
             sidebar.appendChild(todoTab);
         }
         baseBackground.appendChild(sidebar);
+    }
+
+    const composeNewDropdown = function(){
+        const dropdownButton = createElement("button","new-dropdown button","+");
+        const newButtonContainer = prerenderNewButtons();
+        return {dropdownButton, newButtonContainer}
+    }
+
+    const prerenderNewButtons = function(){
+        const container = createElement("div","new-button container");
+        const newProjectButton = createElement("button", "new project button","New Project");
+        const newTodoButton = createElement("button", "new todo button","New Todo");
+        container.appendChild(newProjectButton);
+        container.appendChild(newTodoButton);
+        toggleShowHideElement(container);
+        return container;
+    }
+
+    const toggleShowHideElement = function(element){
+        const currentDisplayState = element.style.display;
+        if (currentDisplayState !== "none"){
+            element.style.display = "none";
+        } else {
+            element.style.display = "block";
+        }
     }
 
     const composeProjectAndChildTodosTab = function(projectToDisplay){
@@ -110,6 +140,8 @@ const renderManager = function (){
         todoBarArea.object = todoToDisplay;
         return todoBarArea;
     }
+
+    // displaying content
 
     let content;
     const renderDefaultContent = function(){
@@ -211,8 +243,19 @@ const renderManager = function (){
     }
 
     const bindSidebarArea = function(){
+        bindDropdownArea();
         bindAllProjectsAndAnyChildTodos();
         bindAllNakedTodos();
+    }
+
+    const bindDropdownArea = function(){
+        const dropdownButton = sidebar.querySelector(".new-dropdown.button");
+        const newButtonContainer = sidebar.querySelector(".new-button.container");
+        dropdownButton.addEventListener("click", () => toggleShowHideElement(newButtonContainer));
+        const newProjectButton = newButtonContainer.querySelector(".new.project.button");
+        // newProjectButton.addEventListener("click", )
+        const newTodoButton = newButtonContainer.querySelector(".new.todo.button");
+        newTodoButton.addEventListener("click",() => showNewTodoFormDialog());
     }
 
     const bindAllProjectsAndAnyChildTodos = function(){

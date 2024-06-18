@@ -44,6 +44,9 @@ body{
     padding-left: 20px;
 }
 
+/* stylize dropdown for new todo or project */
+
+
 /* display child todos of projects as wanted */
 .sidebar .project-and-child-todo{
     display:flex;
