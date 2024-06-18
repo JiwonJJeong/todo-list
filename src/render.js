@@ -8,10 +8,11 @@ const renderManager = function (){
         renderHeader();
         renderSidebar();
         renderDefaultContent();
+        prerenderDialogs();
         bindAllEvents();
     }
 
-    // functions related to displaying and rendering
+    // helper functions to easily create DOM elements
 
     const createElement = function(tag, classAttribute, innerText){
         const createdElement = document.createElement(tag);
@@ -24,6 +25,25 @@ const renderManager = function (){
         if (innerText !== undefined) {createdElement.innerText = innerText};
         return createdElement;
     }
+
+    const createLabelAndInput = function(id, type = "text", labelText){
+        const label = document.createElement("label");
+        label.innerText = labelText;
+        label.for = id;
+        const input = document.createElement("input");
+        input.type = type;
+        input.id = id;
+        input.name = id;
+        return {label, input};
+    }
+
+    const composeContainedFieldElement = function({label,input}){
+        const containerDiv = createElement("div",input.name);
+        containerDiv.append(label, input);
+        return containerDiv;
+    }
+
+    // functions related to displaying and rendering
 
     let baseBackground;
     const renderBaseBackground = function(){
@@ -125,11 +145,50 @@ const renderManager = function (){
         }
     }
 
+    // codes for dialogs. Use dialogs for new todo forms
+
+    const prerenderDialogs = function(){
+        const newTodoFormDialog = composeNewTodoFormDialog();
+        baseBackground.appendChild(newTodoFormDialog);
+    }
+
+    const composeNewTodoFormDialog = function(){
+        const todoFormDialog = document.createElement("dialog");
+        const todoForm = document.createElement("form");
+        const todoFormElementsArray = Object.values(composeTodoFormElements());
+        for (let element of todoFormElementsArray){
+            todoForm.appendChild(element);
+        }
+        todoFormDialog.appendChild(todoForm);
+        return todoFormDialog;
+    }
+
+    const composeTodoFormElements = function(){
+        const nameFields = composeContainedFieldElement(createLabelAndInput("name","text","Title"));
+        const descriptionFields = composeContainedFieldElement(createLabelAndInput("description","text","Description"));
+        const dueDateFields = composeContainedFieldElement(createLabelAndInput("dueDate","date","Due Date"));
+        const priorityQuestion = composePriorityRadioInput();
+        return {nameFields, descriptionFields, dueDateFields, priorityQuestion};
+    }
+
+    const composePriorityRadioInput = function(){
+        const priorityQuestionContainer = createElement("div","priority question area");
+        const priorityRadioQuestionText = createElement("p","priority text","Priority");
+        const priorityHighRadioFields = createLabelAndInput("priorityHigh","radio", "High");
+        const priorityMediumRadioFields = createLabelAndInput("priorityMedium","radio","Medium");
+        const priorityLowRadioFields = createLabelAndInput("priorityLow","radio","Low");
+        priorityQuestionContainer.append(priorityRadioQuestionText,
+            priorityHighRadioFields.input, priorityHighRadioFields.label,
+            priorityMediumRadioFields.input, priorityMediumRadioFields.label,
+            priorityLowRadioFields.input, priorityLowRadioFields.label);
+        return priorityQuestionContainer;
+    }
+
     // all binding event listerner functions
 
     const bindAllEvents = function(){
         bindSidebarArea();
-        //bindContentArea();
+        bindContentArea();
     }
 
     const bindSidebarArea = function(){
@@ -168,6 +227,11 @@ const renderManager = function (){
         const newNode = composeProjectAndChildTodosTab(projectAndChildTodosAreaNode.project);
         sidebar.replaceChild(newNode, projectAndChildTodosAreaNode);
         bindProjectAndChildTodosBar(newNode);
+    }
+
+    const bindContentArea = function(){
+        const addTodoButton = content.querySelector(".add-todo.button");
+        addTodoButton.addEventListener("click", () => renderNewTodoForm());
     }
 
     return {init, rerenderProjectAndChildTodosArea};
