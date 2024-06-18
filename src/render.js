@@ -26,7 +26,7 @@ const renderManager = function (){
         return createdElement;
     }
 
-    const createLabelAndInput = function(id, type = "text", labelText){
+    const createLabelAndInput = function(id, type = "text", labelText, value){
         const label = document.createElement("label");
         label.innerText = labelText;
         label.for = id;
@@ -34,6 +34,9 @@ const renderManager = function (){
         input.type = type;
         input.id = id;
         input.name = id;
+        if (value !== undefined){
+            input.value = value;
+        }
         return {label, input};
     }
 
@@ -179,9 +182,9 @@ const renderManager = function (){
     const composePriorityRadioInput = function(){
         const priorityQuestionContainer = createElement("div","priority question area");
         const priorityRadioQuestionText = createElement("p","priority text","Priority");
-        const priorityHighRadioFields = createLabelAndInput("priorityHigh","radio", "High");
-        const priorityMediumRadioFields = createLabelAndInput("priorityMedium","radio","Medium");
-        const priorityLowRadioFields = createLabelAndInput("priorityLow","radio","Low");
+        const priorityHighRadioFields = createLabelAndInput("priority","radio", "High",3);
+        const priorityMediumRadioFields = createLabelAndInput("priority","radio","Medium",2);
+        const priorityLowRadioFields = createLabelAndInput("priority","radio","Low",1);
         priorityQuestionContainer.append(priorityRadioQuestionText,
             priorityHighRadioFields.input, priorityHighRadioFields.label,
             priorityMediumRadioFields.input, priorityMediumRadioFields.label,
