@@ -125,22 +125,33 @@ const renderManager = function () {
     const composeProjectAndChildTodosTab = function (projectToDisplay) {
         const projectBarAndTodoArea = createElement("div", "project-and-child-todo area");
         const projectBarArea = createElement("div", "project bar area");
+        projectBarAndTodoArea.project = projectToDisplay;
+        projectBarArea.project = projectToDisplay;
         const projectName = createElement("p", "project name", projectToDisplay.name);
         projectBarArea.appendChild(projectName);
         projectBarAndTodoArea.appendChild(projectBarArea);
         renderMoveProjectImages(projectBarAndTodoArea);
         // make sure to render todos of the project, if the project should be open
         if (projectToDisplay.getIsTodosShown()) {
-            const todosArray = projectToDisplay.getTodoArray();
-            for (let todo of todosArray) {
-                const todoTab = composeTodoTab(todo);
-                todoTab.project = projectToDisplay;
-                projectBarAndTodoArea.appendChild(todoTab);
-            }
+            appendProjectChildTodos(projectBarAndTodoArea);
         }
-        projectBarAndTodoArea.project = projectToDisplay;
-        projectBarArea.project = projectToDisplay;
         return projectBarAndTodoArea;
+    }
+
+    const appendProjectChildTodos = function(projectBarAndTodoArea){
+        const todosArray = projectBarAndTodoArea.project.getTodoArray();
+        for (let todo of todosArray) {
+            const todoTab = composeTodoTab(todo);
+            todoTab.project = projectBarAndTodoArea.project;
+            projectBarAndTodoArea.appendChild(todoTab);
+        }
+    }
+
+    const clearProjectChildTodos = function(projectBarAndTodoArea){
+        const todoBarNodes = projectBarAndTodoArea.querySelectorAll(".todo.bar.area");
+        for (let node of todoBarNodes){
+            projectBarAndTodoArea.removeChild(node);
+        }
     }
 
     const composeTodoTab = function (todoToDisplay) {
@@ -149,6 +160,13 @@ const renderManager = function () {
         todoBarArea.appendChild(todoName);
         todoBarArea.object = todoToDisplay;
         return todoBarArea;
+    }
+
+    const appendNewTodoAtIndex = function(todoObject, index){
+        const todoTabNode = composeTodoTab(todoObject);
+        const nakedTodoNodeList = document.querySelectorAll(".sidebar.area > .todo.bar.area");
+        const todoNodeToInsertBefore = nakedTodoNodeList[index];
+        sidebar.insertBefore(todoTabNode, todoNodeToInsertBefore);
     }
 
     const renderMoveProjectImages = function (projectBarAndTodoArea) {
@@ -328,12 +346,6 @@ const renderManager = function () {
         renderTodoContent(todoObject);
     }
 
-    const rerenderProjectAndChildTodosArea = function (projectAndChildTodosAreaNode) {
-        const newNode = composeProjectAndChildTodosTab(projectAndChildTodosAreaNode.project);
-        sidebar.replaceChild(newNode, projectAndChildTodosAreaNode);
-        bindProjectAndChildTodosBar(newNode);
-    }
-
     const swapNodeElements = function(obj1, obj2) {
         // create marker element and insert it where obj1 is
         var temp = document.createElement("div");
@@ -349,30 +361,6 @@ const renderManager = function () {
         temp.parentNode.removeChild(temp);
     }
 
-    // not DRY at this function, room for improvement?
-    const rerenderNakedTodosArea = function () {
-        clearNakedTodoBars();
-        const todosArray = pageManager.getProjectsAndNakedTodos().todosWithoutProject;
-        for (let todo of todosArray) {
-            const todoTab = composeTodoTab(todo);
-            sidebar.appendChild(todoTab);
-        }
-    }
-
-    const rerenderPageAfterSubmit = function (newTodo) {
-        rerenderNakedTodosArea();
-        closeNewTodoFormDialog();
-        bindAllNakedTodos();
-        rerenderContentArea(newTodo);
-    }
-
-    const clearNakedTodoBars = function () {
-        const nakedTodoAreaNodes = document.querySelectorAll(".sidebar.area > .todo.bar.area");
-        for (let node of nakedTodoAreaNodes) {
-            sidebar.removeChild(node);
-        }
-    }
-
     const bindContentArea = function () {
         const addTodoButton = content.querySelector(".add-todo.button");
         addTodoButton.addEventListener("click", () => showNewTodoFormDialog());
@@ -384,7 +372,9 @@ const renderManager = function () {
         submitButton.addEventListener("click", (e) => pageManager.processNewTodoFormSubmit(e, todoForm));
     }
 
-    return { init, rerenderProjectAndChildTodosArea, rerenderPageAfterSubmit, swapNodeElements };
+    return { init, swapNodeElements,
+        appendProjectChildTodos, clearProjectChildTodos,
+     };
 }();
 
 

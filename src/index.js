@@ -68,7 +68,10 @@ const pageManager = function(){
         const projectObject = projectAndChildTodosAreaNode.project;
         console.log("You are trying to open/close the project: " + projectObject.name);
         projectObject.toggleShowTodos();
-        renderManager.rerenderProjectAndChildTodosArea(projectAndChildTodosAreaNode);
+        if (projectObject.getIsTodosShown()){
+            renderManager.appendProjectChildTodos(projectAndChildTodosAreaNode);
+        }
+
     }
 
     const processNewTodoFormSubmit = function(event, formElement){
@@ -83,7 +86,8 @@ const pageManager = function(){
             const priority = formElement.elements.priority.value;
             const newTodo = createAndAddTodo(null,name,description,dueDate,priority);
             sortNakedTodos();
-            renderManager.rerenderPageAfterSubmit(newTodo);
+            const indexToAddTo = todosWithoutProject.indexOf()
+            renderManager.appendNewTodoAtIndex(newTodo, indexToAddTo);
         }
     }
     
