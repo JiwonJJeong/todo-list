@@ -336,7 +336,8 @@ const renderManager = function () {
         const dueDateFields = composeContainedFieldElement(createLabelAndInput("dueDate", "date", "Due Date"));
         const priorityQuestion = composePriorityRadioInput();
         const projectFieldQuestion = composeProjectSelectInput();
-        return { nameFields, descriptionFields, dueDateFields, priorityQuestion, projectFieldQuestion };
+        const checklistQuestion = composeChecklistInputArea();
+        return { nameFields, descriptionFields, dueDateFields, priorityQuestion, projectFieldQuestion, checklistQuestion };
     }
 
     const composePriorityRadioInput = function () {
@@ -365,6 +366,24 @@ const renderManager = function () {
         }
         container.append(questionText, selectElement);
         return container;
+    }
+
+    const composeChecklistInputArea = function(){
+        const container = createElement("div","checklist question area");
+        const questionText = createElement("p","checklist text","Make checklist: ");
+        const field = composeContainedFieldElement(createLabelAndInput("checklist", "text", "Task 1", null, false));
+        const addAnotherFieldButton = createElement("button","add checklist button","+");
+        addAnotherFieldButton.type = "button";
+        container.append(questionText, field, addAnotherFieldButton);
+        return container;
+    }
+
+    let checklistCount = 2;
+    const addAnotherChecklistField = function(){
+        const field = composeContainedFieldElement(createLabelAndInput("checklist", "text", "Task " + checklistCount, null, false));
+        checklistCount++;
+        const nodeToAppendBefore = newTodoFormDialog.querySelector(".add.checklist.button");
+        nodeToAppendBefore.parentNode.insertBefore(field, nodeToAppendBefore);
     }
 
     // most binding event listerner functions
@@ -474,9 +493,11 @@ const renderManager = function () {
     const bindTodoFormDialogArea = function () {
         const submitButton = newTodoFormDialog.querySelector(".submit.button");
         const cancelButton = newTodoFormDialog.querySelector(".cancel.button");
+        const addAnotherFieldButton = newTodoFormDialog.querySelector(".add.checklist.button");
         const todoForm = newTodoFormDialog.querySelector("form");
         submitButton.addEventListener("click", (e) => pageManager.processNewTodoFormSubmit(e, todoForm));
         cancelButton.addEventListener("click", closeNewTodoFormDialog);
+        addAnotherFieldButton.addEventListener("click", addAnotherChecklistField)
     }
 
     return { init, swapNodeElements,

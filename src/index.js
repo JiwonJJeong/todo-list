@@ -88,12 +88,18 @@ const pageManager = function(){
             const description = formElement.elements.description.value;
             const dueDate = formElement.elements.dueDate.value;
             const priority = formElement.elements.priority.value;
+            const checklists = formElement.elements.checklist;
+            const checklistsArray = [...checklists];
+            const checklistValuesWithNoBlanks = checklistsArray
+                        .map((checklist)=>checklist.value)
+                        .filter((value) => value !== "");
+            console.log(checklistValuesWithNoBlanks);
             const projectToAddToIndex = formElement.querySelector("select").selectedIndex-1;
             let projectToAddTo = null;
             if (projectToAddToIndex >=0){
                 projectToAddTo = projects[projectToAddToIndex];
             }
-            const newTodo = createAndAddTodo(projectToAddTo,name,description,dueDate,priority);
+            const newTodo = createAndAddTodo(projectToAddTo,name,description,dueDate,priority, ...checklistValuesWithNoBlanks);
             sortNakedTodos();
             if (projectToAddTo == null){
                 const indexToAddTo = todosWithoutProject.indexOf(newTodo);
