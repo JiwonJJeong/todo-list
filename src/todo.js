@@ -59,8 +59,15 @@ function createChecklist(description) {
 }
 
 function completeToggleable() {
+
+    const toggleComplete = function(){
+        this.isComplete = !this.isComplete;
+        console.log("Toggled complete status to " + this.isComplete);
+        console.log(this);
+    }
+
     return {
-        toggleComplete: () => (this.isComplete = !this.isComplete),
+        toggleComplete,
     }
 }
 

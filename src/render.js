@@ -281,11 +281,13 @@ const renderManager = function () {
 
     const composeChecklistElements = function (checklistArray) {
         const checklistArea = createElement("div", "checklist area");
-        for (let checklist of checklistArray) {
-            const checkIcon = createElement("div");
-            const checkText = createElement("p", "checklist text", checklist.description);
-            checklistArea.appendChild(checkIcon);
-            checklistArea.appendChild(checkText);
+        for (let i=0; i<checklistArray.length; i++) {
+            const checklist = checklistArray[i];
+            const checkfield = createLabelAndInput("checklist " + i,"checkbox", checklist.description);
+            if (checklist.isComplete){
+                checkfield.input.setAttribute("checked","");
+            }
+            checklistArea.append(checkfield.input, checkfield.label);
         }
         return checklistArea;
     }
@@ -482,6 +484,7 @@ const renderManager = function () {
     const rerenderContentArea = function (todoObject) {
         clearContentArea();
         renderTodoContent(todoObject);
+        bindContentArea(todoObject);
     }
 
     const swapNodeElements = function(obj1, obj2) {
@@ -496,9 +499,19 @@ const renderManager = function () {
         temp.parentNode.removeChild(temp);
     }
 
-    const bindContentArea = function () {
+    const bindContentArea = function (todoObject) {
         const addTodoButton = content.querySelector(".add-todo.button");
-        addTodoButton.addEventListener("click", () => showNewTodoFormDialog());
+        if (addTodoButton !== null){
+            addTodoButton.addEventListener("click", () => showNewTodoFormDialog());
+        } else{
+            const checklistInputs = content.querySelectorAll("input");
+            const todoChecklists = todoObject.getChecklistArray();
+            console.log(checklistInputs);
+            console.log(todoChecklists);
+            for (let i = 0; i < checklistInputs.length ; i++){
+                checklistInputs[i].addEventListener("click", ()=>(todoChecklists[i].toggleComplete()));
+            }
+        }
     }
 
     const bindTodoFormDialogArea = function () {
