@@ -179,6 +179,8 @@ const renderManager = function () {
         const nakedTodoNodeList = document.querySelectorAll(".sidebar.area > .todo.bar.area");
         const todoNodeToInsertBefore = nakedTodoNodeList[index];
         sidebar.insertBefore(todoTabNode, todoNodeToInsertBefore);
+        console.log(todoNodeToInsertBefore, nakedTodoNodeList, index);
+        return todoTabNode;
     }
 
     const renderMoveProjectImages = function (projectBarAndTodoArea) {
@@ -436,6 +438,7 @@ const renderManager = function () {
         appendProjectChildTodos, clearProjectChildTodos,
         renderAndBindNewProject, appendNewTodoAtIndex,
         closeNewTodoFormDialog, bindChildTodoBars,
+        bindTodoBar,
      };
 }();
 

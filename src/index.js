@@ -90,8 +90,9 @@ const pageManager = function(){
             const priority = formElement.elements.priority.value;
             const newTodo = createAndAddTodo(null,name,description,dueDate,priority);
             sortNakedTodos();
-            const indexToAddTo = todosWithoutProject.indexOf()
-            renderManager.appendNewTodoAtIndex(newTodo, indexToAddTo);
+            const indexToAddTo = todosWithoutProject.indexOf(newTodo);
+            const newTodoNode = renderManager.appendNewTodoAtIndex(newTodo, indexToAddTo);
+            renderManager.bindTodoBar(newTodoNode);
             renderManager.closeNewTodoFormDialog();
         }
     }
