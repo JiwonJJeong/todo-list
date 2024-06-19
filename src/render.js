@@ -12,6 +12,7 @@ const renderManager = function () {
         renderDefaultContent();
         prerenderDialogs();
         bindAllEvents();
+        prerenderEditNameForm();
     }
 
     // helper functions to easily create DOM elements
@@ -128,6 +129,7 @@ const renderManager = function () {
         const projectBarArea = createElement("div", "project bar area");
         projectBarAndTodoArea.project = projectToDisplay;
         projectBarArea.project = projectToDisplay;
+        projectBarArea.object = projectToDisplay;
         const projectName = createElement("p", "project name", projectToDisplay.name);
         projectBarArea.appendChild(projectName);
         projectBarAndTodoArea.appendChild(projectBarArea);
@@ -187,6 +189,44 @@ const renderManager = function () {
         const projectBar = projectBarAndTodoArea.querySelector(".project.bar.area");
         projectBar.appendChild(upIconElement);
         projectBar.appendChild(downIconElement);
+    }
+
+    // prerenderEditNameForm, able to be moved around as needed
+    let prerenderedEditNameForm;
+    const prerenderEditNameForm = function(){
+        prerenderedEditNameForm = createElement("form","edit name form");
+        const input = createElement("input");
+        input.name = "name";
+        const submitButton = createElement("submit");
+        bindEditNameFormSubmit(submitButton, input);
+        prerenderedEditNameForm.appendChild(input);
+        prerenderedEditNameForm.appendChild(submitButton);
+        prerenderedEditNameForm.isActive = false;
+    };
+
+    // form will submit on both clicking the submit OR enter button
+    const bindEditNameFormSubmit = function(buttonNode, inputNode){
+        buttonNode.addEventListener("click", () => pageManager.processEditNameForm(e));
+        inputNode.addEventListener("keydown", function(e){
+            if (e.code == "Enter"){
+                pageManager.processEditNameForm(e);
+            }
+        })
+    }
+
+    const renderEditNameFormAtBar = function(barNode){
+        if (!prerenderedEditNameForm.isActive){
+            const barTextNode = barNode.querySelector(".name");
+            barNode.replaceChild(prerenderedEditNameForm, barTextNode);
+            let holdOldNodeContent = document.createElement("div");
+            holdOldNodeContent = barTextNode;
+            const input = prerenderedEditNameForm.querySelector("input");
+            input.value = barNode.object.name;
+            prerenderedEditNameForm.isActive = true;
+        } else{
+            alert("Please submit previous edit name.");
+            return;
+        }
     }
 
     // displaying content
@@ -282,7 +322,7 @@ const renderManager = function () {
         return priorityQuestionContainer;
     }
 
-    // all binding event listerner functions
+    // most binding event listerner functions
 
     const bindAllEvents = function () {
         bindSidebarArea();
@@ -324,6 +364,7 @@ const renderManager = function () {
     const bindProjectAndChildTodosBar = function (projectAndChildTodosNode) {
         const projectBarNode = projectAndChildTodosNode.querySelector(".project.bar.area");
         projectBarNode.addEventListener("click", () => pageManager.toggleOpenCloseProjectTab(projectAndChildTodosNode));
+        projectBarNode.addEventListener("auxclick", () => renderEditNameFormAtBar(projectBarNode));
         if (projectBarNode.project.getIsTodosShown()) {
             let childBarNode = projectBarNode.nextSibling;
             while (childBarNode !== null) {
@@ -335,6 +376,7 @@ const renderManager = function () {
 
     const bindTodoBar = function (todoBar) {
         todoBar.addEventListener("click", () => rerenderContentArea(todoBar.object));
+        todoBar.addEventListener("auxclick", () => renderEditNameFormAtBar(todoBar));
     }
 
     const bindUpDownIcons = function (projectBarNode) {
@@ -367,13 +409,10 @@ const renderManager = function () {
         // create marker element and insert it where obj1 is
         var temp = document.createElement("div");
         obj1.parentNode.insertBefore(temp, obj1);
-    
         // move obj1 to right before obj2
         obj2.parentNode.insertBefore(obj1, obj2);
-    
         // move obj2 to right before where obj1 used to be
         temp.parentNode.insertBefore(obj2, temp);
-    
         // remove temporary marker node
         temp.parentNode.removeChild(temp);
     }
