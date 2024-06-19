@@ -102,9 +102,12 @@ const pageManager = function(){
         const newNode = renderManager.renderAndBindNewProject(newProjectObject);
     }
     
-    const processEditNameForm = function(event){
+    const processEditNameForm = function(event, formElement){
         event.preventDefault();
-        console.log("hi");
+        const todoOrProjectObject = formElement.object;
+        const name = formElement.elements.name.value;
+        todoOrProjectObject.name = name;
+        renderManager.closeEditNameForm();
     }
 
     // use parameter project = null if you want the todo to have no project

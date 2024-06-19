@@ -128,6 +128,7 @@ const renderManager = function () {
         const projectBarAndTodoArea = createElement("div", "project-and-child-todo area");
         const projectBarArea = createElement("div", "project bar area");
         projectBarAndTodoArea.project = projectToDisplay;
+        projectBarAndTodoArea.object = projectToDisplay;
         projectBarArea.project = projectToDisplay;
         projectBarArea.object = projectToDisplay;
         const projectName = createElement("p", "project name", projectToDisplay.name);
@@ -208,10 +209,10 @@ const renderManager = function () {
 
     // form will submit on both clicking the submit OR enter button
     const bindEditNameFormSubmit = function(buttonNode, inputNode){
-        buttonNode.addEventListener("click", () => pageManager.processEditNameForm(e));
+        buttonNode.addEventListener("click", () => pageManager.processEditNameForm(e, prerenderedEditNameForm));
         inputNode.addEventListener("keydown", function(e){
             if (e.code == "Enter"){
-                pageManager.processEditNameForm(e);
+                pageManager.processEditNameForm(e, prerenderedEditNameForm);
             }
         })
     }
@@ -220,15 +221,23 @@ const renderManager = function () {
         if (!prerenderedEditNameForm.isActive){
             const barTextNode = barNode.querySelector(".name");
             barNode.replaceChild(prerenderedEditNameForm, barTextNode);
-            let holdOldNodeContent = document.createElement("div");
-            holdOldNodeContent = barTextNode;
+            prerenderedEditNameForm.holdOldNodeContent = document.createElement("div");
+            prerenderedEditNameForm.holdOldNodeContent = barTextNode;
             const input = prerenderedEditNameForm.querySelector("input");
             input.value = barNode.object.name;
             prerenderedEditNameForm.isActive = true;
+            prerenderedEditNameForm.object = barNode.object;
         } else{
             alert("Please submit previous edit name.");
             return;
         }
+    }
+
+    const closeEditNameForm = function(){
+        const textNodeToAddBack = prerenderedEditNameForm.holdOldNodeContent;
+        prerenderedEditNameForm.isActive = false;
+        prerenderedEditNameForm.parentNode.replaceChild(textNodeToAddBack, prerenderedEditNameForm);
+        textNodeToAddBack.innerText = textNodeToAddBack.parentNode.object.name;
     }
 
     // displaying content
@@ -438,7 +447,7 @@ const renderManager = function () {
         appendProjectChildTodos, clearProjectChildTodos,
         renderAndBindNewProject, appendNewTodoAtIndex,
         closeNewTodoFormDialog, bindChildTodoBars,
-        bindTodoBar,
+        bindTodoBar, closeEditNameForm,
      };
 }();
 
