@@ -391,7 +391,8 @@ const renderManager = function () {
 
     return { init, swapNodeElements,
         appendProjectChildTodos, clearProjectChildTodos,
-        renderAndBindNewProject,
+        renderAndBindNewProject, appendNewTodoAtIndex,
+        closeNewTodoFormDialog,
      };
 }();
 

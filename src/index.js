@@ -90,6 +90,7 @@ const pageManager = function(){
             sortNakedTodos();
             const indexToAddTo = todosWithoutProject.indexOf()
             renderManager.appendNewTodoAtIndex(newTodo, indexToAddTo);
+            renderManager.closeNewTodoFormDialog();
         }
     }
 
