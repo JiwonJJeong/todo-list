@@ -14,26 +14,30 @@ const pageManager = function(){
         return {projects,todosWithoutProject}
     }
 
-    const moveProjectNodeUp = function(projectAndChildNode){
+    const moveProjectNodeUp = function(event, projectAndChildNode){
         const project = projectAndChildNode.project;
         const index = projects.indexOf(project);
+        console.log("Move project up" + index)
         if (index >= 1){
-            renderManager.swapProjectAndChildTodosAreas(projectAndChildNode, projectAndChildNode.previousSibling);
+            renderManager.swapNodeElements(projectAndChildNode, projectAndChildNode.previousElementSibling);
             swapArrayElements(projects, index-1, index);
         } else{
             console.log("This project is as high as it can be!");
         }
+        event.stopPropagation();
     }
 
-    const moveProjectNodeDown = function(projectAndChildNode){
+    const moveProjectNodeDown = function(event, projectAndChildNode){
         const project = projectAndChildNode.project;
         const index = projects.indexOf(project);
+        console.log("Move project down")
         if (index <= projects.length){
-            renderManager.swapProjectAndChildTodosAreas(projectAndChildNode, projectAndChildNode.nextSibling);
+            renderManager.swapNodeElements(projectAndChildNode, projectAndChildNode.nextElementSibling);
             swapArrayElements(projects, index, index+1);
         } else{
             console.log("This project is as low as it can be!");
         }
+        event.stopPropagation();
     }
 
     const swapArrayElements = function(array, index1, index2){

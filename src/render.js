@@ -1,5 +1,7 @@
 // module strictly for displaying elements
 import { pageManager } from "./index.js";
+import upIcon from "./images/menu-up.svg"
+import downIcon from "./images/menu-down.svg"
 
 const renderManager = function () {
 
@@ -126,7 +128,7 @@ const renderManager = function () {
         const projectName = createElement("p", "project name", projectToDisplay.name);
         projectBarArea.appendChild(projectName);
         projectBarAndTodoArea.appendChild(projectBarArea);
-        renderMoveProjectImages(projectBarArea);
+        renderMoveProjectImages(projectBarAndTodoArea);
         // make sure to render todos of the project, if the project should be open
         if (projectToDisplay.getIsTodosShown()) {
             const todosArray = projectToDisplay.getTodoArray();
@@ -149,11 +151,14 @@ const renderManager = function () {
         return todoBarArea;
     }
 
-    const renderMoveProjectImages = function (projectBar) {
-        const upIcon = createImage("src", "up icon", "move project up icon");
-        const downIcon = createImage("src", "down icon", "move project down icon");
-        projectBar.appendChild(upIcon);
-        projectBar.appendChild(downIcon);
+    const renderMoveProjectImages = function (projectBarAndTodoArea) {
+        const upIconElement = createImage(upIcon, "up icon", "move project up icon");
+        const downIconElement = createImage(downIcon, "down icon", "move project down icon");
+        upIconElement.projectAndChildNode = projectBarAndTodoArea;
+        downIconElement.projectAndChildNode = projectBarAndTodoArea;
+        const projectBar = projectBarAndTodoArea.querySelector(".project.bar.area");
+        projectBar.appendChild(upIconElement);
+        projectBar.appendChild(downIconElement);
     }
 
     // displaying content
@@ -305,7 +310,15 @@ const renderManager = function () {
     }
 
     const bindUpDownIcons = function () {
-
+        const upIcons = sidebar.querySelectorAll(".up.icon");
+        console.log(upIcons);
+        for (let upIconElement of upIcons){
+            upIconElement.addEventListener("click", (e)=>pageManager.moveProjectNodeUp(e,upIconElement.projectAndChildNode));
+        }
+        const downIcons = sidebar.querySelectorAll(".down.icon");
+        for (let downIconElement of downIcons){
+            downIconElement.addEventListener("click", (e)=>pageManager.moveProjectNodeDown(e,downIconElement.projectAndChildNode));
+        }
     }
 
     // content binding
@@ -321,10 +334,19 @@ const renderManager = function () {
         bindProjectAndChildTodosBar(newNode);
     }
 
-    const swapProjectAndChildTodosAreas = function (node1, node2) {
-        const node1Holder = node1;
-        sidebar.replaceChild(node1, node2);
-        sidebar.replaceChild(node2, node1Holder);
+    const swapNodeElements = function(obj1, obj2) {
+        // create marker element and insert it where obj1 is
+        var temp = document.createElement("div");
+        obj1.parentNode.insertBefore(temp, obj1);
+    
+        // move obj1 to right before obj2
+        obj2.parentNode.insertBefore(obj1, obj2);
+    
+        // move obj2 to right before where obj1 used to be
+        temp.parentNode.insertBefore(obj2, temp);
+    
+        // remove temporary marker node
+        temp.parentNode.removeChild(temp);
     }
 
     // not DRY at this function, room for improvement?
@@ -362,7 +384,7 @@ const renderManager = function () {
         submitButton.addEventListener("click", (e) => pageManager.processNewTodoFormSubmit(e, todoForm));
     }
 
-    return { init, rerenderProjectAndChildTodosArea, rerenderPageAfterSubmit, swapProjectAndChildTodosAreas };
+    return { init, rerenderProjectAndChildTodosArea, rerenderPageAfterSubmit, swapNodeElements };
 }();
 
 
