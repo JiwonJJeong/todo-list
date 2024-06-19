@@ -139,6 +139,13 @@ const renderManager = function () {
         return projectBarAndTodoArea;
     }
 
+    const renderNewProject = function(projectToDisplay){
+        const projectBarNode = composeProjectAndChildTodosTab(projectToDisplay);
+        const projectAndChildTodoNodes = sidebar.querySelectorAll(".project-and-child-todo.area");
+        const lastProjectBarNodeToAppendAfter = projectAndChildTodoNodes[projectAndChildTodoNodes.length-1];
+        lastProjectBarNodeToAppendAfter.after(projectBarNode);
+    }
+
     const appendProjectChildTodos = function(projectBarAndTodoArea){
         const todosArray = projectBarAndTodoArea.project.getTodoArray();
         for (let todo of todosArray) {
@@ -293,7 +300,7 @@ const renderManager = function () {
         const newButtonContainer = sidebar.querySelector(".new-button.container");
         dropdownButton.addEventListener("click", () => toggleShowHideElement(newButtonContainer));
         const newProjectButton = newButtonContainer.querySelector(".new.project.button");
-        // newProjectButton.addEventListener("click", )
+        newProjectButton.addEventListener("click", () => pageManager.processNewProject());
         const newTodoButton = newButtonContainer.querySelector(".new.todo.button");
         newTodoButton.addEventListener("click", () => showNewTodoFormDialog());
     }
@@ -375,6 +382,7 @@ const renderManager = function () {
 
     return { init, swapNodeElements,
         appendProjectChildTodos, clearProjectChildTodos,
+        renderNewProject,
      };
 }();
 

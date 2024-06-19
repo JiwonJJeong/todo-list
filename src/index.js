@@ -92,6 +92,11 @@ const pageManager = function(){
             renderManager.appendNewTodoAtIndex(newTodo, indexToAddTo);
         }
     }
+
+    const processNewProject = function(){
+        const newProjectObject = createAndAddProject("New Project (rename me!)");
+        renderManager.renderNewProject(newProjectObject);
+    }
     
     // use parameter project = null if you want the todo to have no project
     const createAndAddTodo = function(project,title,description,dueDate,priority,...checklistArray){
@@ -128,6 +133,7 @@ const pageManager = function(){
     return {getProjectsAndNakedTodos, createAndAddTodo, createAndAddProject,
         moveTodoToProject, removeTodoFromProject, addExampleTodosandProjects, toggleOpenCloseProjectTab,
         processNewTodoFormSubmit, comparePriority, moveProjectNodeUp, moveProjectNodeDown,
+        processNewProject,
     };
 
 }();
