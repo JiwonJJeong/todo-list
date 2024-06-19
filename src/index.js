@@ -70,6 +70,8 @@ const pageManager = function(){
         projectObject.toggleShowTodos();
         if (projectObject.getIsTodosShown()){
             renderManager.appendProjectChildTodos(projectAndChildTodosAreaNode);
+            const projectBarNode = projectAndChildTodosAreaNode.querySelector(".project.bar.area");
+            renderManager.bindChildTodoBars(projectBarNode);
         } else{
             renderManager.clearProjectChildTodos(projectAndChildTodosAreaNode);
         }

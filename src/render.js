@@ -365,6 +365,10 @@ const renderManager = function () {
         const projectBarNode = projectAndChildTodosNode.querySelector(".project.bar.area");
         projectBarNode.addEventListener("click", () => pageManager.toggleOpenCloseProjectTab(projectAndChildTodosNode));
         projectBarNode.addEventListener("auxclick", () => renderEditNameFormAtBar(projectBarNode));
+        bindChildTodoBars(projectBarNode);
+    }
+
+    const bindChildTodoBars = function(projectBarNode){
         if (projectBarNode.project.getIsTodosShown()) {
             let childBarNode = projectBarNode.nextSibling;
             while (childBarNode !== null) {
@@ -431,7 +435,7 @@ const renderManager = function () {
     return { init, swapNodeElements,
         appendProjectChildTodos, clearProjectChildTodos,
         renderAndBindNewProject, appendNewTodoAtIndex,
-        closeNewTodoFormDialog,
+        closeNewTodoFormDialog, bindChildTodoBars,
      };
 }();
 
