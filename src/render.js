@@ -306,6 +306,7 @@ const renderManager = function () {
     }
 
     const closeNewTodoFormDialog = function () {
+        newTodoFormDialog.querySelector("form").reset();
         newTodoFormDialog.close();
     }
 
@@ -318,7 +319,10 @@ const renderManager = function () {
         }
         const submitButton = createElement("input", "submit button", "Submit");
         submitButton.type = "submit";
+        const cancelButton = createElement("button" ,"cancel button", "Cancel");
+        cancelButton.type = "button";
         todoForm.appendChild(submitButton);
+        todoForm.appendChild(cancelButton);
         todoFormDialog.appendChild(todoForm);
         return todoFormDialog;
     }
@@ -466,8 +470,10 @@ const renderManager = function () {
 
     const bindTodoFormDialogArea = function () {
         const submitButton = newTodoFormDialog.querySelector(".submit.button");
+        const cancelButton = newTodoFormDialog.querySelector(".cancel.button");
         const todoForm = newTodoFormDialog.querySelector("form");
         submitButton.addEventListener("click", (e) => pageManager.processNewTodoFormSubmit(e, todoForm));
+        cancelButton.addEventListener("click", closeNewTodoFormDialog);
     }
 
     return { init, swapNodeElements,
