@@ -310,6 +310,7 @@ const renderManager = function () {
 
     const closeNewTodoFormDialog = function () {
         newTodoFormDialog.querySelector("form").reset();
+        resetChecklistFieldsToOne();
         newTodoFormDialog.close();
     }
 
@@ -384,6 +385,16 @@ const renderManager = function () {
         checklistCount++;
         const nodeToAppendBefore = newTodoFormDialog.querySelector(".add.checklist.button");
         nodeToAppendBefore.parentNode.insertBefore(field, nodeToAppendBefore);
+    }
+
+    const resetChecklistFieldsToOne = function(){
+        checklistCount = 1;
+        const checklistArea = newTodoFormDialog.querySelector(".checklist.question.area");
+        const checklists = checklistArea.querySelectorAll("div.checklist");
+        console.log(checklists);
+        for (let i = 1; i<checklists.length; i++){
+            checklistArea.removeChild(checklists[i]);
+        }
     }
 
     // most binding event listerner functions
