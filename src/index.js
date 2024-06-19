@@ -88,11 +88,22 @@ const pageManager = function(){
             const description = formElement.elements.description.value;
             const dueDate = formElement.elements.dueDate.value;
             const priority = formElement.elements.priority.value;
-            const newTodo = createAndAddTodo(null,name,description,dueDate,priority);
+            const projectToAddToIndex = formElement.querySelector("select").selectedIndex-1;
+            let projectToAddTo = null;
+            if (projectToAddToIndex >=0){
+                projectToAddTo = projects[projectToAddToIndex];
+            }
+            const newTodo = createAndAddTodo(projectToAddTo,name,description,dueDate,priority);
             sortNakedTodos();
-            const indexToAddTo = todosWithoutProject.indexOf(newTodo);
-            const newTodoNode = renderManager.appendNewTodoAtIndex(newTodo, indexToAddTo);
-            renderManager.bindTodoBar(newTodoNode);
+            if (projectToAddTo == null){
+                const indexToAddTo = todosWithoutProject.indexOf(newTodo);
+                const newTodoNode = renderManager.appendNewTodoAtIndex(newTodo, indexToAddTo);
+                renderManager.bindTodoBar(newTodoNode);
+            } else if (projectToAddTo.getIsTodosShown()) {
+                const indexToAddTo = projectToAddTo.getTodoArray().indexOf(newTodo);
+                const newTodoNode = renderManager.appendNewTodoAtIndex(newTodo, indexToAddTo, projectToAddToIndex);
+                renderManager.bindTodoBar(newTodoNode);
+            }
             renderManager.closeNewTodoFormDialog();
         }
     }

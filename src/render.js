@@ -175,12 +175,23 @@ const renderManager = function () {
         return todoBarArea;
     }
 
-    const appendNewTodoAtIndex = function(todoObject, index){
+    const appendNewTodoAtIndex = function(todoObject, index, projectIndex){
         const todoTabNode = composeTodoTab(todoObject);
-        const nakedTodoNodeList = document.querySelectorAll(".sidebar.area > .todo.bar.area");
-        const todoNodeToInsertBefore = nakedTodoNodeList[index];
-        sidebar.insertBefore(todoTabNode, todoNodeToInsertBefore);
-        console.log(todoNodeToInsertBefore, nakedTodoNodeList, index);
+        let todoNodeList;
+        if (projectIndex == undefined){
+            todoNodeList = document.querySelectorAll(".sidebar.area > .todo.bar.area");
+        } else {
+            const projectList = sidebar.querySelectorAll(".project-and-child-todo");
+            todoNodeList = projectList[projectIndex].querySelectorAll(".todo.bar.area");
+        }
+        const todoNodeToInsertBefore = todoNodeList[index];
+        if (todoNodeToInsertBefore !== undefined){
+            todoNodeToInsertBefore.parentNode.insertBefore(todoTabNode, todoNodeToInsertBefore);
+        } else {
+            let todoNodeToInsertAfter = todoNodeList[index-1];
+            todoNodeToInsertAfter.after(todoTabNode);
+        }
+        console.log(todoNodeToInsertBefore, todoNodeList, index);
         return todoTabNode;
     }
 
@@ -317,7 +328,8 @@ const renderManager = function () {
         const descriptionFields = composeContainedFieldElement(createLabelAndInput("description", "text", "Description"));
         const dueDateFields = composeContainedFieldElement(createLabelAndInput("dueDate", "date", "Due Date"));
         const priorityQuestion = composePriorityRadioInput();
-        return { nameFields, descriptionFields, dueDateFields, priorityQuestion };
+        const projectFieldQuestion = composeProjectSelectInput();
+        return { nameFields, descriptionFields, dueDateFields, priorityQuestion, projectFieldQuestion };
     }
 
     const composePriorityRadioInput = function () {
@@ -331,6 +343,21 @@ const renderManager = function () {
             priorityMediumRadioFields.input, priorityMediumRadioFields.label,
             priorityLowRadioFields.input, priorityLowRadioFields.label);
         return priorityQuestionContainer;
+    }
+
+    const composeProjectSelectInput = function(){
+        const container = createElement("div","project question area");
+        const questionText = createElement("p","project text","Add to project: ");
+        const selectElement = document.createElement("select");
+        const projectNames = pageManager.getProjectsAndNakedTodos().projects.map((project)=>(project.name));
+        projectNames.unshift("(no project)");
+        for (let i=0; i < projectNames.length ; i++){
+            const option = document.createElement("option");
+            option.innerText = projectNames[i];
+            selectElement.appendChild(option);
+        }
+        container.append(questionText, selectElement);
+        return container;
     }
 
     // most binding event listerner functions
