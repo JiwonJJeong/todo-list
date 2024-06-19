@@ -139,11 +139,13 @@ const renderManager = function () {
         return projectBarAndTodoArea;
     }
 
-    const renderNewProject = function(projectToDisplay){
+    const renderAndBindNewProject = function(projectToDisplay){
         const projectBarNode = composeProjectAndChildTodosTab(projectToDisplay);
         const projectAndChildTodoNodes = sidebar.querySelectorAll(".project-and-child-todo.area");
         const lastProjectBarNodeToAppendAfter = projectAndChildTodoNodes[projectAndChildTodoNodes.length-1];
         lastProjectBarNodeToAppendAfter.after(projectBarNode);
+        bindProjectAndChildTodosBar(projectBarNode);
+        bindUpDownIcons(projectBarNode)
     }
 
     const appendProjectChildTodos = function(projectBarAndTodoArea){
@@ -335,13 +337,20 @@ const renderManager = function () {
         todoBar.addEventListener("click", () => rerenderContentArea(todoBar.object));
     }
 
-    const bindUpDownIcons = function () {
-        const upIcons = sidebar.querySelectorAll(".up.icon");
-        console.log(upIcons);
+    const bindUpDownIcons = function (projectBarNode) {
+        let upIcons;
+        let downIcons;
+        // if a project bar node is NOT specified, bind to all icons
+        if (projectBarNode === undefined){
+            upIcons = sidebar.querySelectorAll(".up.icon");
+            downIcons = sidebar.querySelectorAll(".down.icon");
+        } else{
+            upIcons = [projectBarNode.querySelector(".up.icon")];
+            downIcons = [projectBarNode.querySelector(".down.icon")];
+        }
         for (let upIconElement of upIcons){
             upIconElement.addEventListener("click", (e)=>pageManager.moveProjectNodeUp(e,upIconElement.projectAndChildNode));
         }
-        const downIcons = sidebar.querySelectorAll(".down.icon");
         for (let downIconElement of downIcons){
             downIconElement.addEventListener("click", (e)=>pageManager.moveProjectNodeDown(e,downIconElement.projectAndChildNode));
         }
@@ -382,7 +391,7 @@ const renderManager = function () {
 
     return { init, swapNodeElements,
         appendProjectChildTodos, clearProjectChildTodos,
-        renderNewProject,
+        renderAndBindNewProject,
      };
 }();
 

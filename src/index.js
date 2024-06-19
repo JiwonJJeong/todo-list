@@ -95,7 +95,7 @@ const pageManager = function(){
 
     const processNewProject = function(){
         const newProjectObject = createAndAddProject("New Project (rename me!)");
-        renderManager.renderNewProject(newProjectObject);
+        const newNode = renderManager.renderAndBindNewProject(newProjectObject);
     }
     
     // use parameter project = null if you want the todo to have no project
