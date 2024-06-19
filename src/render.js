@@ -29,7 +29,7 @@ const renderManager = function () {
         return createdElement;
     }
 
-    const createLabelAndInput = function (id, type = "text", labelText, value, requiredBoolean) {
+    const createLabelAndInput = function (id, type = "text", labelText, value, requiredBoolean, maxlength) {
         const label = document.createElement("label");
         label.innerText = labelText;
         label.for = id;
@@ -42,6 +42,9 @@ const renderManager = function () {
         }
         if (requiredBoolean === true) {
             input.setAttribute("required", "");
+        }
+        if (maxlength !== undefined){
+            input.setAttribute("maxlength",maxlength);
         }
         return { label, input };
     }
@@ -328,7 +331,7 @@ const renderManager = function () {
     }
 
     const composeTodoFormElements = function () {
-        const nameFields = composeContainedFieldElement(createLabelAndInput("name", "text", "Title*", null, true));
+        const nameFields = composeContainedFieldElement(createLabelAndInput("name", "text", "Title*", null, true, 40));
         const descriptionFields = composeContainedFieldElement(createLabelAndInput("description", "text", "Description"));
         const dueDateFields = composeContainedFieldElement(createLabelAndInput("dueDate", "date", "Due Date"));
         const priorityQuestion = composePriorityRadioInput();
