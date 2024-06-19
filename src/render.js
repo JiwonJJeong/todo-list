@@ -55,6 +55,7 @@ const renderManager = function () {
         const image = createElement("img", classString);
         image.src = src;
         image.alt = altText;
+        image.style.width = "30px";
         return image;
     }
 
