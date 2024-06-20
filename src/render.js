@@ -210,6 +210,29 @@ const renderManager = function () {
         projectBar.appendChild(downIconElement);
     }
 
+    const removeTab = function(indexOfProject, indexOfTodo){
+        let projectNodeToSearch;
+        // find the project to delete from if there is a project specified
+        if (indexOfProject !== null){
+            projectNodeToSearch = sidebar.querySelectorAll(".project-and-child-todo.area")[indexOfProject];
+            console.log(projectNodeToSearch);
+        }
+        // if projectIndex specified AND todoIndex specified AND the project is open, delete the todo of the project
+        if (indexOfProject !== null && indexOfTodo !== undefined && projectNodeToSearch.project.getIsTodosShown()){
+            const todoToRemove = projectNodeToSearch.querySelectorAll(":scope > .todo.bar.area")[indexOfTodo];
+            todoToRemove.parentNode.removeChild(todoToRemove);
+        } 
+        // else if projectIndex not specified AND todoIndex specified, delete the naked todo
+        else if (indexOfProject == null && indexOfTodo !== undefined){
+            const todoToRemove = sidebar.querySelectorAll(":scope > .todo.bar.area")[indexOfTodo];
+            todoToRemove.parentNode.removeChild(todoToRemove);
+        }
+        // else if no index for todo is specified, delete the entire project specified
+        else if (indexOfProject !== null && indexOfTodo == undefined){
+            projectNodeToSearch.parentNode.removeChild(projectNodeToSearch);
+        }
+    }
+
     // prerenderEditNameForm, able to be moved around as needed
     let prerenderedEditNameForm;
     const prerenderEditNameForm = function(){
@@ -321,7 +344,7 @@ const renderManager = function () {
     }
 
     const composeNewTodoFormDialog = function () {
-        const todoFormDialog = document.createElement("dialog");
+        const todoFormDialog = createElement("dialog", "new todo dialog");
         const todoForm = document.createElement("form");
         const todoFormElementsArray = Object.values(composeTodoFormElements());
         for (let element of todoFormElementsArray) {
@@ -369,11 +392,12 @@ const renderManager = function () {
     }
 
     const composeProjectSelection = function(){
-        const selectElement = document.createElement("select");
+        const selectElement = createElement("select", "project selection");
         const projectNames = pageManager.getProjectsAndNakedTodos().projects.map((project)=>(project.name));
         projectNames.unshift("(no project)");
         for (let i=0; i < projectNames.length ; i++){
             const option = document.createElement("option");
+            option.value = i-1;
             option.innerText = projectNames[i];
             selectElement.appendChild(option);
         }
@@ -411,7 +435,8 @@ const renderManager = function () {
     // code for delete dialog
 
     const showDeleteDialog = function(){
-        deleteDialog.show();
+        deleteDialog.showModal();
+        updateDeleteFormSelection();
     }
 
     const closeDeleteDialog = function(){
@@ -424,6 +449,13 @@ const renderManager = function () {
         const deleteForm = composeDeleteForm();
         deleteDialog.appendChild(deleteForm);
         return deleteDialog;
+    }
+
+    const updateDeleteFormSelection = function(){
+        const oldDeleteForm = deleteDialog.querySelector(".delete.form");
+        const newDeleteForm = composeDeleteForm();
+        oldDeleteForm.parentNode.replaceChild(newDeleteForm, oldDeleteForm);
+        bindDeleteFormDialogArea();
     }
 
     const composeDeleteForm = function(){
@@ -441,7 +473,7 @@ const renderManager = function () {
     }
 
     const composeTodoSelection = function(){
-        const selectElement = document.createElement("select");
+        const selectElement = createElement("select","todo selection");
         const projects = pageManager.getProjectsAndNakedTodos().projects;
         const nakedTodos = pageManager.getProjectsAndNakedTodos().todosWithoutProject;
         const noSelectOption = document.createElement("option")
@@ -450,11 +482,12 @@ const renderManager = function () {
         selectElement.appendChild(noSelectOption);
         for (let project of projects){
             const optgroup = document.createElement("optgroup");
+            const projectIndex = projects.indexOf(project);
             optgroup.label = project.name;
             const todos = project.getTodoArray();
             for (let todo of todos){
                 const selection = document.createElement("option");
-                selection.value = todos.indexOf(todo);
+                selection.value = [projectIndex, todos.indexOf(todo)];
                 selection.innerText = todo.name;
                 optgroup.appendChild(selection);
             }
@@ -462,7 +495,7 @@ const renderManager = function () {
         }
         for (let todo of nakedTodos){
             const selection = document.createElement("option");
-            selection.value = nakedTodos.indexOf(todo);
+            selection.value = [-1,nakedTodos.indexOf(todo)];
             selection.innerText = todo.name;
             selectElement.appendChild(selection);
         }
@@ -553,7 +586,10 @@ const renderManager = function () {
     }
 
     const bindDeleteFormDialogArea = function(){
-        
+        const submitButton = deleteDialog.querySelector(".submit.button");
+        const cancelButton = deleteDialog.querySelector(".cancel.button");
+        submitButton.addEventListener("click", (e) => pageManager.processDeleteFormSubmit(e, deleteDialog.querySelector("form")));
+        cancelButton.addEventListener("click", closeDeleteDialog);
     }
 
     // content binding
@@ -606,6 +642,7 @@ const renderManager = function () {
         renderAndBindNewProject, appendNewTodoAtIndex,
         closeNewTodoFormDialog, bindChildTodoBars,
         bindTodoBar, closeEditNameForm,
+        removeTab, closeDeleteDialog,
      };
 }();
 

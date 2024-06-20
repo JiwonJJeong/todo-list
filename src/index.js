@@ -127,6 +127,32 @@ const pageManager = function(){
         renderManager.closeEditNameForm();
     }
 
+    const processDeleteFormSubmit = function(event, deleteForm){
+        event.preventDefault();
+        const indexOfProjectToRemove = deleteForm.querySelector(".project.selection").value;
+        if (indexOfProjectToRemove >=0){
+            const removedProject = projects.splice(indexOfProjectToRemove, 1);
+            console.log(removedProject.name + " is deleted");
+            renderManager.removeTab(indexOfProjectToRemove);
+        }
+        const todoSelectionNode = deleteForm.querySelector(".todo.selection");
+        const projectAndTodoIndexOfTodoToRemove = todoSelectionNode.value.split(",");
+        const indexOfOptgroupSelected = Number(projectAndTodoIndexOfTodoToRemove[0]);
+        const indexOfTodoToRemove = Number(projectAndTodoIndexOfTodoToRemove[1]);
+        console.log("Indexes for delete: " + indexOfOptgroupSelected + " " + indexOfTodoToRemove)
+        if (indexOfOptgroupSelected !== -1 && indexOfTodoToRemove >=0 ){
+            const projectToRemoveFrom = projects[indexOfOptgroupSelected];
+            const removedTodo = projectToRemoveFrom.getTodoArray().splice(indexOfTodoToRemove, 1)[0];
+            renderManager.removeTab(indexOfOptgroupSelected, indexOfTodoToRemove);
+            console.log(`${removedTodo.name} from ${projectToRemoveFrom.name} is removed`);
+        } else if (indexOfOptgroupSelected == -1 && indexOfTodoToRemove >=0 ){
+            const removedTodo = todosWithoutProject.splice(indexOfTodoToRemove, 1)[0];
+            renderManager.removeTab(null, indexOfTodoToRemove);
+            console.log(`${removedTodo.name} from todos without projects is removed`);
+        }
+        renderManager.closeDeleteDialog();
+    }
+
     // use parameter project = null if you want the todo to have no project
     const createAndAddTodo = function(project,title,description,dueDate,priority,...checklistArray){
         const todo = createTodo(title,description,dueDate,priority,...checklistArray);
@@ -162,7 +188,7 @@ const pageManager = function(){
     return {getProjectsAndNakedTodos, createAndAddTodo, createAndAddProject,
         moveTodoToProject, removeTodoFromProject, addExampleTodosandProjects, toggleOpenCloseProjectTab,
         processNewTodoFormSubmit, comparePriority, moveProjectNodeUp, moveProjectNodeDown,
-        processNewProject, processEditNameForm,
+        processNewProject, processEditNameForm, processDeleteFormSubmit,
     };
 
 }();
