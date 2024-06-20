@@ -334,6 +334,7 @@ const renderManager = function () {
     }
 
     const showNewTodoFormDialog = function () {
+        rerenderProjectSelection();
         newTodoFormDialog.showModal();
     }
 
@@ -402,6 +403,13 @@ const renderManager = function () {
             selectElement.appendChild(option);
         }
         return selectElement;
+    }
+
+    const rerenderProjectSelection = function(){
+        console.log("project selection for new todo form rerendered")
+        const selectElement = newTodoFormDialog.querySelector("select");
+        const newSelect = composeProjectSelection();
+        selectElement.parentNode.replaceChild(newSelect,selectElement);
     }
 
     const composeChecklistInputArea = function(){
