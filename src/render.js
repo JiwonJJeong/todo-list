@@ -161,6 +161,7 @@ const renderManager = function () {
         // make sure to render todos of the project, if the project should be open
         if (projectToDisplay.getIsTodosShown()) {
             appendProjectChildTodos(projectBarAndTodoArea);
+            projectBarArea.classList.add("open");
         }
         return projectBarAndTodoArea;
     }
