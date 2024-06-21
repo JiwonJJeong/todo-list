@@ -7,11 +7,12 @@
 
 
 * {
-    --base-background-color: gray;
+    --base-background-color: rgb(255, 217, 146);
     --secondary-base-background-color: green;
     --button-color: pink;
     --project-open-color: purple;
     --project-closed-color: purple;
+    box-sizing: border-box;
 }
 
 h1,
@@ -114,7 +115,24 @@ body {
         --l: 25%;
     }
 
+    /* style the form that appears to edit name */
+    .bar.area form{
+        display: flex;
+    }
 
+    .bar.area form input{
+        margin-left: -10px;
+        padding: 5px 12px;
+        --l: 25%;
+        border: 2px solid gray;
+        width: 250px;
+    }
+
+    .bar.area form .submit.button{
+        padding: 10px 2px;
+        font-size: 12px;
+        text-align: center;
+    }
 }
 
 /* stylize dropdown for new todo or project */

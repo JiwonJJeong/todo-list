@@ -60,7 +60,7 @@ const renderManager = function () {
         const image = createElement("img", classString);
         image.src = src;
         image.alt = altText;
-        image.style.width = "30px";
+        image.style.width = "29px";
         return image;
     }
 
@@ -225,6 +225,20 @@ const renderManager = function () {
         projectBar.appendChild(container);
     }
 
+    const hideIcons = function(projectBarAndTodoArea){
+        const icons = projectBarAndTodoArea.querySelectorAll("img.icon");
+        for (let icon of icons){
+            icon.style.display = "none";
+        }
+    }
+
+    const displayIcons = function(projectBarAndTodoArea){
+        const icons = projectBarAndTodoArea.querySelectorAll("img.icon");
+        for (let icon of icons){
+            icon.style.display = "inline";
+        }
+    }
+
     const removeTab = function(indexOfProject, indexOfTodo){
         let projectNodeToSearch;
         // find the project to delete from if there is a project specified
@@ -254,7 +268,8 @@ const renderManager = function () {
         prerenderedEditNameForm = createElement("form","edit name form");
         const input = createElement("input");
         input.name = "name";
-        const submitButton = createElement("submit");
+        input.setAttribute("maxlength",40);
+        const submitButton = createElement("submit","submit button", "Save");
         bindEditNameFormSubmit(submitButton, input);
         prerenderedEditNameForm.appendChild(input);
         prerenderedEditNameForm.appendChild(submitButton);
@@ -263,7 +278,7 @@ const renderManager = function () {
 
     // form will submit on both clicking the submit OR enter button
     const bindEditNameFormSubmit = function(buttonNode, inputNode){
-        buttonNode.addEventListener("click", () => pageManager.processEditNameForm(e, prerenderedEditNameForm));
+        buttonNode.addEventListener("click", (e) => pageManager.processEditNameForm(e, prerenderedEditNameForm));
         inputNode.addEventListener("keydown", function(e){
             if (e.code == "Enter"){
                 pageManager.processEditNameForm(e, prerenderedEditNameForm);
@@ -597,7 +612,10 @@ const renderManager = function () {
     const bindProjectAndChildTodosBar = function (projectAndChildTodosNode) {
         const projectBarNode = projectAndChildTodosNode.querySelector(".project.bar.area");
         projectBarNode.addEventListener("click", () => pageManager.toggleOpenCloseProjectTab(projectAndChildTodosNode));
-        projectBarNode.addEventListener("auxclick", () => renderEditNameFormAtBar(projectBarNode));
+        projectBarNode.addEventListener("auxclick", function() {
+            renderEditNameFormAtBar(projectBarNode);
+            hideIcons(projectAndChildTodosNode);
+        });
         bindChildTodoBars(projectBarNode);
     }
 
@@ -692,7 +710,7 @@ const renderManager = function () {
         renderAndBindNewProject, appendNewTodoAtIndex,
         closeNewTodoFormDialog, bindChildTodoBars,
         bindTodoBar, closeEditNameForm,
-        removeTab, closeDeleteDialog,
+        removeTab, closeDeleteDialog, displayIcons,
      };
 }();
 

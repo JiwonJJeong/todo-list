@@ -124,9 +124,11 @@ const pageManager = function(){
     
     const processEditNameForm = function(event, formElement){
         event.preventDefault();
+        event.stopPropagation();
         const todoOrProjectObject = formElement.object;
         const name = formElement.elements.name.value;
         todoOrProjectObject.name = name;
+        renderManager.displayIcons(formElement.parentNode.parentNode);
         renderManager.closeEditNameForm();
     }
 
