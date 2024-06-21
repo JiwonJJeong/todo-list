@@ -109,7 +109,7 @@ const renderManager = function () {
     }
 
     const composeNewDropdown = function () {
-        const dropdownButton = createElement("button", "new-dropdown button", "+");
+        const dropdownButton = createElement("button", "new-dropdown button", "Menu Options");
         const newButtonContainer = prerenderNewButtons();
         return { dropdownButton, newButtonContainer }
     }
@@ -131,7 +131,15 @@ const renderManager = function () {
         if (currentDisplayState !== "none") {
             element.style.display = "none";
         } else {
-            element.style.display = "block";
+            element.style.display = "flex";
+        }
+        const dropdownButton = sidebar.querySelector(".new-dropdown.button");
+        if (dropdownButton !== null){
+            if (dropdownButton.classList.contains("pressed")){
+                dropdownButton.classList.remove("pressed");
+            } else {
+                dropdownButton.classList.add("pressed");
+            }
         }
     }
 
