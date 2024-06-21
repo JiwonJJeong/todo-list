@@ -517,12 +517,14 @@ const renderManager = function () {
         const projectSelection = composeProjectSelection();
         const deleteTodoPrompt = createElement("label", "delete todo label", "Delete todo: ");
         const todoSelection = composeTodoSelection();
+        const buttonContainer = createElement("div","button container");
         const submitButton = createElement("input","submit button", "Submit");
         submitButton.type = "submit";
         const cancelButton = createElement("button", "cancel button" ,"Cancel");
         cancelButton.type = "button";
+        buttonContainer.append(cancelButton, submitButton);
         const form = createElement ("form","delete form");
-        form.append(deleteProjectPrompt, projectSelection, deleteTodoPrompt, todoSelection, submitButton, cancelButton);
+        form.append(deleteProjectPrompt, projectSelection, deleteTodoPrompt, todoSelection, buttonContainer);
         return form;
     }
 
