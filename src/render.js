@@ -570,7 +570,10 @@ const renderManager = function () {
         const helpButton = document.querySelector(".help.button");
         helpButton.addEventListener("click", function (){
             clearContentArea();
-            content.appendChild(composeDefaultContent());
+            const newContent = composeDefaultContent();
+            baseBackground.replaceChild(newContent, content);
+            content = newContent;
+            bindContentArea();
     })};
 
     const bindSidebarArea = function () {
@@ -679,7 +682,7 @@ const renderManager = function () {
 
     const bindContentArea = function (todoObject) {
         const addTodoButton = content.querySelector(".add-todo.button");
-        if (addTodoButton !== null){
+        if (todoObject == undefined ){
             addTodoButton.addEventListener("click", () => showNewTodoFormDialog());
         } else{
             const checklistInputs = content.querySelectorAll("input");
