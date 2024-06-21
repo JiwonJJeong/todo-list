@@ -1,4 +1,10 @@
-/* custom variables, global resets, and changes to body */
+/* webfonts, custom variables, global resets, and changes to body */
+@font-face{
+    font-family: "Cartoon";
+    src: url("./fonts/3Dumb.woff2") format("woff2"),
+        url("./fonts/3Dumb.woff") format("woff");
+}
+
 
 *{
     --base-background-color: gray;
@@ -15,6 +21,7 @@ body{
     justify-content: center;
     margin-top: 10vh;
     gap: 10px;
+    font-family: Helvetica, Arial, sans-serif
 }
 
 /* stylize all tiny circular buttons */
@@ -48,7 +55,8 @@ body{
     align-items: center;
     
     .header.logo{
-        font-family:Georgia, 'Times New Roman', Times, serif;
+        font-family: "Cartoon";
+        font-size: 40px;
     }
 }
 
