@@ -366,7 +366,7 @@ const renderManager = function () {
 
     const composeHelpList = function(){
         const list = createElement("ul","help list");
-        const helpFunction1 = createElement("li",null,"Click the 'More Options' button.");
+        const helpFunction1 = createElement("li",null,"Click the 'Menu Options' button.");
         const helpFunction2 = createElement("li",null,"Click on a project tab.");
         const helpFunction3 = createElement("li",null,"Click the up/down icons.");
         const helpFunction4 = createElement("li",null,"Secondary click on any side tab.");
