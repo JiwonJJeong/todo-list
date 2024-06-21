@@ -19,6 +19,7 @@ The Odin Project JS project to create a todo list. Aimed to practice OOP princip
 - Use factory functions and IIFEs for a revealing module pattern
 - Program mindfully with SOLID principles for clean and scalable code
 - Rely on array methods including map and reduce to handle objects
+- Debug using DevTools, source maps, the console, and documentation
 
 ### Store and retrieve data with JSON
 - Set and get JSON from localStorage using Web Storage API
