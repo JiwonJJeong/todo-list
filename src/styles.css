@@ -7,13 +7,15 @@
 
 
 * {
-    --base-background-color: rgb(255, 217, 146);
-    --secondary-base-background-color: green;
+    --document-background-color: #B1AFFF;
+    --base-background-color: #FFE9D0;
     --button-color: pink;
-    --project-open-color: purple;
-    --project-closed-color: purple;
-    --content-background-color: lightblue;
+    --content-background-color: #FFFED3;
     box-sizing: border-box;
+}
+
+:root{
+    background-color: var(--document-background-color);
 }
 
 h1,
@@ -99,13 +101,13 @@ body {
     }
 
     /* default hsla values for sidebar bar colors */
-    --h: 100;
-    --s: 50%;
-    --l: 50%;
+    --h: 199;
+    --s: 100;
+    --l: 87%;
     --a:1;
 
     .bar.area {
-        border: solid 1px black;
+        border: solid 1px rgb(0, 0, 0);
         flex: 0 0 60px;
         /* center text */
         display: flex;
@@ -116,7 +118,7 @@ body {
     }
 
     .bar.area.open{
-        --l: 25%;
+        --l: 70%;
     }
 
     /* style the form that appears to edit name */
