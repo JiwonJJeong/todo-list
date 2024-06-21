@@ -37,6 +37,9 @@ const dataManager = function () {
     }
 
     const getProjectsAndTodosFromStorage = function(){
+        if (!checkStorageAvailable){
+            return;
+        }
         let i = 0;
         let projectFromStorage = localStorage.getItem(`project${i}`);
         while (projectFromStorage !== null){
@@ -59,6 +62,9 @@ const dataManager = function () {
     }
 
     const setAllProjectsAndTodos = function(){
+        if (!checkStorageAvailable){
+            return;
+        }
         const projects = pageManager.getProjectsAndNakedTodos().projects;
         const todos = pageManager.getProjectsAndNakedTodos().todosWithoutProject;
         for (let project of projects){
@@ -70,6 +76,9 @@ const dataManager = function () {
     }
 
     const setProjectOrTodo = function(object){
+        if (!checkStorageAvailable){
+            return;
+        }
         const projects = pageManager.getProjectsAndNakedTodos().projects;
         const todos = pageManager.getProjectsAndNakedTodos().todosWithoutProject;
         const projectIndex = projects.indexOf(object);
