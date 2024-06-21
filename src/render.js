@@ -371,7 +371,8 @@ const renderManager = function () {
         const helpFunction3 = createElement("li",null,"Move projects with the up/down icons.");
         const helpFunction4 = createElement("li",null,"Secondary click on any side tab to rename it.");
         const helpFunction5 = createElement("li",null,"Checkmark any tasks within todos to save it as complete.");
-        list.append(helpFunction1, helpFunction2, helpFunction3, helpFunction4, helpFunction5);
+        const helpFunction6 = createElement("li",null,"Try refreshing the page to test local data storage!");
+        list.append(helpFunction1, helpFunction2, helpFunction3, helpFunction4, helpFunction5, helpFunction6);
         return list;
     }
 
@@ -710,10 +711,8 @@ const renderManager = function () {
         } else{
             const checklistInputs = content.querySelectorAll("input");
             const todoChecklists = todoObject.getChecklistArray();
-            console.log(checklistInputs);
-            console.log(todoChecklists);
             for (let i = 0; i < checklistInputs.length ; i++){
-                checklistInputs[i].addEventListener("click", ()=>(todoChecklists[i].toggleComplete()));
+                checklistInputs[i].addEventListener("click", ()=> pageManager.processChecklistToggle(todoChecklists[i],todoObject));
             }
         }
     }

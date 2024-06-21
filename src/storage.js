@@ -56,7 +56,6 @@ const storageManager = function () {
         for (let i=0; i< partial.getTodoArray().length; i++) {
             const todo = partial.getTodoArray()[i];
             partial.todoArray[i] = reattachTodoMethods(todo);
-            console.log(partial.todoArray[i]);
         }
         return partial;
     }
@@ -66,7 +65,6 @@ const storageManager = function () {
         for (let i=0; i< partial.getChecklistArray().length; i++) {
             const checklist = partial.getChecklistArray()[i];
             partial.checklistArray[i] = reattachChecklistMethods(checklist);
-            console.log(partial.checklistArray[i]);
         }
         return partial;
     }

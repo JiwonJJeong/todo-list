@@ -172,6 +172,11 @@ const pageManager = function(){
         renderManager.closeDeleteDialog();
     }
 
+    const processChecklistToggle = function(checklistObject, todoObject){
+        checklistObject.toggleComplete();
+        storageManager.setProjectOrTodo(todoObject);
+    }
+
     // use parameter project = null if you want the todo to have no project
     const createAndAddTodo = function(project,title,description,dueDate,priority,...checklistArray){
         const todo = createTodo(title,description,dueDate,priority,...checklistArray);
@@ -226,7 +231,7 @@ const pageManager = function(){
     return {getProjectsAndNakedTodos, createAndAddTodo, createAndAddProject,
         moveTodoToProject, removeTodoFromProject, addExampleTodosandProjects, toggleOpenCloseProjectTab,
         processNewTodoFormSubmit, comparePriority, moveProjectNodeUp, moveProjectNodeDown,
-        processNewProject, processEditNameForm, processDeleteFormSubmit, init
+        processNewProject, processEditNameForm, processDeleteFormSubmit, init, processChecklistToggle
     };
 
 }();
