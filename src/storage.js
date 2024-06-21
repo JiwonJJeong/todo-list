@@ -117,8 +117,9 @@ const storageManager = function () {
     const stringifyChecklist = function(todoObject){
         let JSONstring = "";
         const checklistArray = todoObject.getChecklistArray();
+        console.log(checklistArray);
         for (let checklist of checklistArray){
-            JSONstring += `"${JSON.stringify(checklist)}", `;
+            JSONstring += JSON.stringify(checklist) +", ";
         }
         if (JSONstring.length > 0){
             JSONstring.slice(-2);
