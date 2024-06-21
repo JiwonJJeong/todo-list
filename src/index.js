@@ -17,7 +17,7 @@ const pageManager = function(){
     const moveProjectNodeUp = function(event, projectAndChildNode){
         const project = projectAndChildNode.project;
         const index = projects.indexOf(project);
-        console.log("Move project up" + index)
+        console.log("Move project up" + index);
         if (index >= 1){
             renderManager.swapNodeElements(projectAndChildNode, projectAndChildNode.previousElementSibling);
             swapArrayElements(projects, index-1, index);
@@ -30,8 +30,9 @@ const pageManager = function(){
     const moveProjectNodeDown = function(event, projectAndChildNode){
         const project = projectAndChildNode.project;
         const index = projects.indexOf(project);
-        console.log("Move project down")
-        if (index <= projects.length){
+        console.log("Move project down" + index);
+        console.log(projects.length);
+        if (index < projects.length-1){
             renderManager.swapNodeElements(projectAndChildNode, projectAndChildNode.nextElementSibling);
             swapArrayElements(projects, index, index+1);
         } else{
