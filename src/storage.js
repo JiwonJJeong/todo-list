@@ -100,10 +100,6 @@ const storageManager = function () {
 
     const stringifyProject = function(projectObject){
         let projectJSON = JSON.stringify(projectObject);
-        for (let todo of projectObject.getTodoArray()){
-            const todoJSON = stringifyTodo(todo);
-            projectJSON = insertTodoJSON(todoJSON, projectJSON);
-        }
         return projectJSON;
     }
 
