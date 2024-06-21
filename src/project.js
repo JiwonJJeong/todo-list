@@ -66,4 +66,8 @@ function createProject(name) {
     }
 }
 
+const projectMethodDelegate {
+
+}
+
 export {createProject};

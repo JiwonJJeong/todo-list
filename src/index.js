@@ -44,7 +44,6 @@ const pageManager = function(){
             console.log("This project is as low as it can be!");
         }
         event.stopPropagation();
-        storageManager.setAllProjectOrTodo(project);
     }
 
     const swapArrayElements = function(array, index1, index2){
@@ -126,7 +125,6 @@ const pageManager = function(){
                 renderManager.bindTodoBar(newTodoNode);
             }
             renderManager.closeNewTodoFormDialog();
-            storageManager.setAllProjectsAndTodos();
         }
     }
 
@@ -172,7 +170,6 @@ const pageManager = function(){
             console.log(`${removedObject.name} from todos without projects is removed`);
         }
         renderManager.closeDeleteDialog();
-        storageManager.removeProjectOrTodo(removedObject);
     }
 
     // use parameter project = null if you want the todo to have no project
@@ -202,11 +199,16 @@ const pageManager = function(){
 
     const init = function(){
         const projectsAndTodos = storageManager.getProjectsAndTodosFromStorage();
-        projects = projectsAndTodos.projects;
-        todosWithoutProject = projectsAndTodos.todos;
-        if (projects == undefined && todosWithoutProject == undefined){
+        alert(projectsAndTodos);
+        if (projectsAndTodos !== undefined){
+            projects = projectsAndTodos.projects;
+            todosWithoutProject = projectsAndTodos.todos;
+        } else{
             addExampleTodosandProjects();
+            console.log("No data detected in localStorage. Added examples!");
         }
+        renderManager.init();
+        storageManager.setAllProjectsAndTodos();
     }
 
     const addExampleTodosandProjects = function(){
@@ -219,7 +221,6 @@ const pageManager = function(){
         createAndAddTodo(testProject, "Add ability to edit existing todos", "Existing todos should be able to be deleted. Their names and checklist status should also be able to be edited. All of this information should be properly stored, not just rendered on the DOM directly.", "2024-06-23", 3, );
         const testProject2 = createAndAddProject("Woodworking Project");
         createAndAddTodo(testProject2,"Brainstorm something to make", "Try to create a basic concept sketch of the next project to make. Concept sketch should have multiple perspectives and some close-up diagrams of any key mechanical parts.", "2024-07-04", 3, "Research inspiration ideas", "Check my current supplies");
-        storageManager.setAllProjectsAndTodos();
     }
 
     return {getProjectsAndNakedTodos, createAndAddTodo, createAndAddProject,
@@ -233,6 +234,5 @@ const pageManager = function(){
 
 
 pageManager.init();
-renderManager.init();
 
 export {pageManager};
