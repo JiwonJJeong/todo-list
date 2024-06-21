@@ -41,11 +41,11 @@ const storageManager = function () {
         const partialTodos = partialProjectsAndTodos.partialTodos;
         let projects = [];
         let todos = [];
-        for (let partialProject of partialProjectsAndTodos.partialProjects) {
+        for (let partialProject of partialProjects) {
             projects.push(reattachProjectMethods(partialProject));
         }
-        for (let partialTodos of partialProjectsAndTodos.partialTodos) {
-            todos.push(reattachTodoMethods(partialTodos));
+        for (let partialTodo of partialTodos) {
+            todos.push(reattachTodoMethods(partialTodo));
         }
 
         return { projects, todos };
@@ -53,16 +53,20 @@ const storageManager = function () {
 
     const reattachProjectMethods = function (partial) {
         partial = attachProjectMethods(partial);
-        for (let todo of partial.getTodoArray()) {
-            todo = reattachTodoMethods(todo);
+        for (let i=0; i< partial.getTodoArray().length; i++) {
+            const todo = partial.getTodoArray()[i];
+            partial.todoArray[i] = reattachTodoMethods(todo);
+            console.log(partial.todoArray[i]);
         }
         return partial;
     }
 
     const reattachTodoMethods = function (partial) {
         partial = attachTodoMethods(partial);
-        for (let checklist of partial.getChecklistArray()) {
-            checklist = reattachChecklistMethods(checklist);
+        for (let i=0; i< partial.getChecklistArray().length; i++) {
+            const checklist = partial.getChecklistArray()[i];
+            partial.checklistArray[i] = reattachChecklistMethods(checklist);
+            console.log(partial.checklistArray[i]);
         }
         return partial;
     }
@@ -142,7 +146,6 @@ const storageManager = function () {
     const stringifyChecklist = function (todoObject) {
         let JSONstring = "";
         const checklistArray = todoObject.getChecklistArray();
-        console.log(checklistArray);
         for (let checklist of checklistArray) {
             JSONstring += JSON.stringify(checklist) + ", ";
         }
