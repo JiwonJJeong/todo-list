@@ -107,11 +107,14 @@ body {
         align-items: center;
         padding-left: 20px;
         background: hsl(var(--h) var(--s) var(--l) / var(--a));
+        justify-content:space-between;
     }
 
     .bar.area.open{
         --l: 25%;
     }
+
+
 }
 
 /* stylize dropdown for new todo or project */

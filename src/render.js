@@ -215,13 +215,14 @@ const renderManager = function () {
     }
 
     const renderMoveProjectImages = function (projectBarAndTodoArea) {
+        const container = createElement("div","icon container");
         const upIconElement = createImage(upIcon, "up icon", "move project up icon");
         const downIconElement = createImage(downIcon, "down icon", "move project down icon");
         upIconElement.projectAndChildNode = projectBarAndTodoArea;
         downIconElement.projectAndChildNode = projectBarAndTodoArea;
         const projectBar = projectBarAndTodoArea.querySelector(".project.bar.area");
-        projectBar.appendChild(upIconElement);
-        projectBar.appendChild(downIconElement);
+        container.append(upIconElement, downIconElement);
+        projectBar.appendChild(container);
     }
 
     const removeTab = function(indexOfProject, indexOfTodo){
