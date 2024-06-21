@@ -200,7 +200,7 @@ const pageManager = function(){
     const init = function(){
         const projectsAndTodos = storageManager.getProjectsAndTodosFromStorage();
         console.log(projectsAndTodos);
-        if (projectsAndTodos !== undefined){
+        if (projectsAndTodos.projects.length !==0 || projectsAndTodos.todos.length !==0){
             projects = projectsAndTodos.projects;
             todosWithoutProject = projectsAndTodos.todos;
         } else{

@@ -147,7 +147,7 @@ const storageManager = function () {
             JSONstring += JSON.stringify(checklist) + ", ";
         }
         if (JSONstring.length > 0) {
-            JSONstring.slice(-2);
+            JSONstring = JSONstring.slice(0, -2);
         }
         return JSONstring;
     }
@@ -155,18 +155,20 @@ const storageManager = function () {
     const insertTodoJSON = function (todoJSON, initialJSON) {
         const indexOfTodoArrayKey = initialJSON.indexOf("todoArray");
         const indexToAddTo = indexOfTodoArrayKey + ('todoArray":[');
+        const indexToRemoveUpTo = initialJSON.indexOf("]",indexToAddTo);
         const insertedJSON = initialJSON.substring(0, indexToAddTo)
             + todoJSON
-            + initialJSON.substring(indexToAddTo);
+            + initialJSON.substring(indexToRemoveUpTo);
         return insertedJSON;
     }
 
     const insertChecklistJSON = function (checklistArrayJSON, initialJSON) {
         const indexOfChecklistArrayKey = initialJSON.indexOf("checklistArray");
         const indexToAddTo = indexOfChecklistArrayKey + ('checklistArray":[').length;
+        const indexToRemoveUpTo = initialJSON.indexOf("]",indexToAddTo);
         const insertedJSON = initialJSON.substring(0, indexToAddTo)
             + checklistArrayJSON
-            + initialJSON.substring(indexToAddTo);
+            + initialJSON.substring(indexToRemoveUpTo);
         return insertedJSON;
     }
 
