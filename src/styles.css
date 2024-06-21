@@ -12,6 +12,7 @@
     --button-color: pink;
     --project-open-color: purple;
     --project-closed-color: purple;
+    --content-background-color: lightblue;
     box-sizing: border-box;
 }
 
@@ -53,6 +54,8 @@ body {
     grid-template-columns: 300px 1fr;
     background-color: var(--base-background-color);
     border-radius: 10px;
+    max-width: 1000px;
+    min-width: 600px;
 }
 
 /* stylize header */
@@ -135,9 +138,6 @@ body {
     }
 }
 
-/* stylize dropdown for new todo or project */
-
-
 /* display child todos of projects as wanted */
 .sidebar .project-and-child-todo {
     display: flex;
@@ -147,4 +147,29 @@ body {
 .sidebar .project-and-child-todo .todo.bar.area {
     flex: 0 0 40px;
     padding-left: 40px;
+}
+
+/* stylize content area */
+.content.area{
+    display:flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+
+    .content.title{
+        align-self:center;
+    }
+
+    .content.date{
+        align-self: flex-end;
+    }
+
+
+
+    .checklist.area{
+        display:grid;
+        grid-template-columns: 30px 1fr;
+        align-items:end;
+    }
+
 }
