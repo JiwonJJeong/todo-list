@@ -6,6 +6,7 @@ import downIcon from "./images/menu-down.svg"
 const renderManager = function () {
 
     const init = function () {
+        renderHelpButton();
         renderBaseBackground();
         renderHeader();
         renderSidebar();
@@ -19,7 +20,7 @@ const renderManager = function () {
 
     const createElement = function (tag, classAttribute, innerText) {
         const createdElement = document.createElement(tag);
-        if (classAttribute !== undefined) {
+        if (classAttribute !== undefined && classAttribute !== null) {
             const splitClassStringsArray = classAttribute.split(" ");
             for (let singleClass of splitClassStringsArray) {
                 createdElement.classList.add(singleClass);
@@ -64,6 +65,11 @@ const renderManager = function () {
     }
 
     // functions related to displaying and rendering
+    const renderHelpButton = function(){
+        const helpButton = createElement("button","help button","?");
+        const body = document.querySelector("body");
+        body.appendChild(helpButton);
+    }
 
     let baseBackground;
     const renderBaseBackground = function () {
@@ -283,14 +289,22 @@ const renderManager = function () {
 
     let content;
     const renderDefaultContent = function () {
-        content = createElement("div", "content area");
+        content = composeDefaultContent();
+        baseBackground.appendChild(content);
+    }
+
+    const composeDefaultContent = function(){
+        const contentArea = createElement("div", "content area");
         const defaultText = createElement("p", "default text", "Let's get started! Choose a todo.");
         const defaultSubText = createElement("p", "default-sub text", "Or create one!");
         const defaultAddTodoButton = createElement("button", "add-todo button", "+");
-        content.appendChild(defaultText);
-        content.appendChild(defaultSubText);
-        content.appendChild(defaultAddTodoButton);
-        baseBackground.appendChild(content);
+        const defaultHelplistHeader = createElement("p","help header","Need help? Check out these functions: ");
+        const defaultHelpList = composeHelpList();
+        contentArea.appendChild(defaultText);
+        contentArea.appendChild(defaultSubText);
+        contentArea.appendChild(defaultAddTodoButton);
+        contentArea.append(defaultHelplistHeader, defaultHelpList);
+        return contentArea;
     }
 
     const renderTodoContent = function (todo) {
@@ -315,6 +329,17 @@ const renderManager = function () {
             checklistArea.append(checkfield.input, checkfield.label);
         }
         return checklistArea;
+    }
+
+    const composeHelpList = function(){
+        const list = createElement("ul","help list");
+        const helpFunction1 = createElement("li",null,"Click the + button on the sidebar to dropdown options.");
+        const helpFunction2 = createElement("li",null,"Click on a project tab to open or close its todos.");
+        const helpFunction3 = createElement("li",null,"Move projects with the up/down icons.");
+        const helpFunction4 = createElement("li",null,"Secondary click on any side tab to rename it.");
+        const helpFunction5 = createElement("li",null,"Checkmark any tasks within todos to save it as complete.");
+        list.append(helpFunction1, helpFunction2, helpFunction3, helpFunction4, helpFunction5);
+        return list;
     }
 
     const clearContentArea = function () {
@@ -513,11 +538,19 @@ const renderManager = function () {
     // most binding event listerner functions
 
     const bindAllEvents = function () {
+        bindHelpButton();
         bindSidebarArea();
         bindContentArea();
         bindTodoFormDialogArea();
         bindDeleteFormDialogArea();
     }
+
+    const bindHelpButton = function(){
+        const helpButton = document.querySelector(".help.button");
+        helpButton.addEventListener("click", function (){
+            clearContentArea();
+            content.appendChild(composeDefaultContent());
+    })};
 
     const bindSidebarArea = function () {
         bindDropdownArea();
