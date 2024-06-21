@@ -99,13 +99,16 @@ const pageManager = function(){
             const description = formElement.elements.description.value;
             const dueDate = formElement.elements.dueDate.value;
             const priority = formElement.elements.priority.value;
-            const checklists = formElement.elements.checklist.value;
-            const checklistsArray = [...checklists];
-            console.log(checklistsArray);
-            const checklistValuesWithNoBlanks = checklistsArray
-                        .map((checklist)=>checklist.value)
-                        .filter((value) => value !== "");
-            console.log(checklistValuesWithNoBlanks);
+            let  checklist = formElement.elements.checklist;
+            let checklistValuesWithNoBlanks;
+            if (checklist.length > 1){
+                const checklistArray = checklist = Array.from(checklist);
+                checklistValuesWithNoBlanks = checklistArray
+                                .map((checklist)=>checklist.value)
+                                .filter((value) => value !== "");
+            } else{
+                checklistValuesWithNoBlanks = [checklist.value];
+            }
             const projectToAddToIndex = formElement.querySelector("select").selectedIndex-1;
             let projectToAddTo = null;
             if (projectToAddToIndex >=0){

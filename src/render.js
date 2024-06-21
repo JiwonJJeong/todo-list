@@ -491,7 +491,7 @@ const renderManager = function () {
     }
 
     const resetChecklistFieldsToOne = function(){
-        checklistCount = 1;
+        checklistCount = 2;
         const checklistArea = newTodoFormDialog.querySelector(".checklist.question.area");
         const checklists = checklistArea.querySelectorAll("div.checklist");
         console.log(checklists);
