@@ -67,16 +67,18 @@ const pageManager = function(){
 
     const toggleOpenCloseProjectTab = function(projectAndChildTodosAreaNode){
         const projectObject = projectAndChildTodosAreaNode.project;
+        const projectBar = projectAndChildTodosAreaNode.querySelector(".project.bar.area");
         console.log("You are trying to open/close the project: " + projectObject.name);
         projectObject.toggleShowTodos();
         if (projectObject.getIsTodosShown()){
             renderManager.appendProjectChildTodos(projectAndChildTodosAreaNode);
             const projectBarNode = projectAndChildTodosAreaNode.querySelector(".project.bar.area");
             renderManager.bindChildTodoBars(projectBarNode);
+            projectBar.classList.add("open");
         } else{
             renderManager.clearProjectChildTodos(projectAndChildTodosAreaNode);
+            projectBar.classList.remove("open");
         }
-
     }
 
     const processNewTodoFormSubmit = function(event, formElement){
@@ -183,7 +185,6 @@ const pageManager = function(){
         createAndAddTodo(testProject, "Add ability to edit existing todos", "This todo has a project.", "Test dueDate", 3, );
         const testProject2 = createAndAddProject("Woodworking Project");
         createAndAddTodo(testProject2,"Brainstorm something to make", "This todo has a project and should be shown on default", "Test dueDate", 3, "Research inspiration ideas", "Check my current supplies");
-        testProject2.toggleShowTodos();
     }
 
     return {getProjectsAndNakedTodos, createAndAddTodo, createAndAddProject,

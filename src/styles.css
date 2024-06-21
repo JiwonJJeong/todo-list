@@ -10,6 +10,8 @@
     --base-background-color: gray;
     --secondary-base-background-color: green;
     --button-color: pink;
+    --project-open-color: purple;
+    --project-closed-color: purple;
 }
 
 h1,
@@ -47,7 +49,7 @@ body {
 .base.area {
     display: grid;
     grid-template-rows: 100px auto;
-    grid-template-columns: 200px 1fr;
+    grid-template-columns: 300px 1fr;
     background-color: var(--base-background-color);
     border-radius: 10px;
 }
@@ -91,6 +93,12 @@ body {
         align-self: center;
     }
 
+    /* default hsla values for sidebar bar colors */
+    --h: 100;
+    --s: 50%;
+    --l: 50%;
+    --a:1;
+
     .bar.area {
         border: solid 1px black;
         flex: 0 0 60px;
@@ -98,6 +106,11 @@ body {
         display: flex;
         align-items: center;
         padding-left: 20px;
+        background: hsl(var(--h) var(--s) var(--l) / var(--a));
+    }
+
+    .bar.area.open{
+        --l: 25%;
     }
 }
 
