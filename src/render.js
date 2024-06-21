@@ -332,7 +332,7 @@ const renderManager = function () {
         const contentArea = createElement("div", "content area");
         const defaultText = createElement("p", "default text", "Let's get started! Choose a todo.");
         const defaultAddTodoButton = createElement("button", "add-todo button", "Or create one!");
-        const defaultHelplistHeader = createElement("p","help header","Need help? Check out these functions: ");
+        const defaultHelplistHeader = createElement("p","help header","Need help? Explore these functions: ");
         const defaultHelpList = composeHelpList();
         contentArea.appendChild(defaultText);
         contentArea.appendChild(defaultAddTodoButton);
@@ -366,11 +366,11 @@ const renderManager = function () {
 
     const composeHelpList = function(){
         const list = createElement("ul","help list");
-        const helpFunction1 = createElement("li",null,"Click the + button on the sidebar to dropdown options.");
-        const helpFunction2 = createElement("li",null,"Click on a project tab to open or close its todos.");
-        const helpFunction3 = createElement("li",null,"Move projects with the up/down icons.");
-        const helpFunction4 = createElement("li",null,"Secondary click on any side tab to rename it.");
-        const helpFunction5 = createElement("li",null,"Checkmark any tasks within todos to save it as complete.");
+        const helpFunction1 = createElement("li",null,"Click the 'More Options' button.");
+        const helpFunction2 = createElement("li",null,"Click on a project tab.");
+        const helpFunction3 = createElement("li",null,"Click the up/down icons.");
+        const helpFunction4 = createElement("li",null,"Secondary click on any side tab.");
+        const helpFunction5 = createElement("li",null,"Click on a checkbox inside a todo.");
         const helpFunction6 = createElement("li",null,"Try refreshing the page to test local data storage!");
         list.append(helpFunction1, helpFunction2, helpFunction3, helpFunction4, helpFunction5, helpFunction6);
         return list;
