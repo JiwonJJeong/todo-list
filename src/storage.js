@@ -1,7 +1,7 @@
 // this module is for working with localStorage to store data //
 import { pageManager } from "./index.js";
-import { createProject } from "./project.js";
-import { createChecklist, createTodo } from "./todo.js";
+import { attachProjectMethods,  } from "./project.js";
+import { attachTodoMethods, attachChecklistMethods } from "./todo.js";
 
 const storageManager = function () {
     let projects = [];
@@ -38,35 +38,38 @@ const storageManager = function () {
             return undefined;
         }
         const partialProjects = partialProjectsAndTodos.partialProjects;
-        const partialTodos = partialProjectsAndTodos.partialTodos
+        const partialTodos = partialProjectsAndTodos.partialTodos;
+        let projects = [];
+        let todos = [];
         for (let partialProject of partialProjectsAndTodos.partialProjects) {
-            reattachProjectMethods(partialProject);
+            projects.push(reattachProjectMethods(partialProject));
         }
         for (let partialTodos of partialProjectsAndTodos.partialTodos) {
-            reattachTodoMethods(partialTodos);
+            todos.push(reattachTodoMethods(partialTodos));
         }
-        return { partialProjects, partialTodos };
+
+        return { projects, todos };
     }
 
-    let originalProject = createProject("original");
-    let originalTodo = createTodo("original");
-    let originalChecklist = createChecklist("original");
     const reattachProjectMethods = function (partial) {
-        partial.prototype = originalProject.prototype;
+        partial = attachProjectMethods(partial);
         for (let todo of partial.getTodoArray()) {
-            reattachTodoMethods(todo);
+            todo = reattachTodoMethods(todo);
         }
+        return partial;
     }
 
     const reattachTodoMethods = function (partial) {
-        partial.prototype = originalTodo.prototype;
+        partial = attachTodoMethods(partial);
         for (let checklist of partial.getChecklistArray()) {
-            reattachChecklistMethods(checklist);
+            checklist = reattachChecklistMethods(checklist);
         }
+        return partial;
     }
 
     const reattachChecklistMethods = function (partial) {
-        partial.prototype = originalChecklist.prototype;
+        partial = attachChecklistMethods(partial);
+        return partial;
     }
 
     const getPartialProjectsAndTodos = function () {

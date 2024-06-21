@@ -11,26 +11,8 @@ function createTodo (name,description,dueDate,priority,...checklistDescriptions)
         }
     }();
 
+    const methods = todoMethodDelegate();
 
-    const incrementPriority = function(){
-        priority++;
-    }
-
-    const decrementPriority = function(){
-        priority--;
-    }
-
-    const getChecklistArray = function () {
-        return checklistArray;
-    }
-
-    const addChecklist = function (newChecklist) {
-        checklistArray.push(newChecklist);
-    }
-
-    const removeChecklist = function (checklistToRemove) {
-        checklistArray.pop(checklistToRemove);
-    }
 
     return {
         name,
@@ -39,12 +21,38 @@ function createTodo (name,description,dueDate,priority,...checklistDescriptions)
         priority,
         isComplete,
         checklistArray,
+        ...methods,
+    }
+}
+
+const todoMethodDelegate = function(){
+
+    const getChecklistArray = function () {
+        return this.checklistArray;
+    }
+
+    const addChecklist = function (newChecklist) {
+        this.checklistArray.push(newChecklist);
+    }
+
+    const removeChecklist = function (checklistToRemove) {
+        this.checklistArray.pop(checklistToRemove);
+    }
+
+    return {
         getChecklistArray,
         addChecklist,
         removeChecklist,
         ...completeToggleable(),
-        incrementPriority,
-        decrementPriority,
+    }
+}
+
+const attachTodoMethods = function(partial){
+    const methods = todoMethodDelegate();
+    
+    return {
+        ...methods,
+        ...partial,
     }
 }
 
@@ -71,4 +79,12 @@ function completeToggleable() {
     }
 }
 
-export {createTodo, createChecklist, completeToggleable};
+const attachChecklistMethods = function(partial){
+
+    return {
+        ...completeToggleable(),
+        ...partial,
+    }
+}
+
+export {createTodo, createChecklist, completeToggleable, attachTodoMethods, attachChecklistMethods};

@@ -1,73 +1,70 @@
 // module for project that (can) hold todos //
-import {completeToggleable} from "./todo.js";
 import {pageManager} from "./index.js";
 
 function createProject(name) {
+    const methods = projectMethodDelegate();
 
     let isComplete = false;
     let todoArray = [];
     let isTodosShown = false;
 
+    return {
+        ...methods,
+        name,
+        todoArray,
+        isTodosShown,
+    }
+}
+
+const projectMethodDelegate = function(){
+
     const getTodoArray = function () {
-        return todoArray;
+        return this.todoArray;
     }
 
     const getTodo = function(index){
-        return todoArray[index];
+        return this.todoArray[index];
     }
 
     const addTodo = function (newTodo) {
-        todoArray.push(newTodo);
+        this.todoArray.push(newTodo);
     }
 
     const removeTodo = function (todoToRemove) {
-        todoArray.pop(todoToRemove);
+        this.todoArray.pop(todoToRemove);
     }
 
     // sort by priority only with 3 being highest (and first), 1 being lowest
     const sortTodos = function () {
-        todoArray.sort(pageManager.comparePriority);
-    }
-
-    const updateCompleteBasedOnTodos = function (boolean) {
-        isComplete = isAllTodosComplete();
-    }
-
-    const isAllTodosComplete = function () {
-        for (todo of todoArray) {
-            if (todo.isComplete === false) {
-                return false;
-            }
-        }
-        return true;
+        this.todoArray.sort(pageManager.comparePriority);
     }
 
     const toggleShowTodos = function(){
-        isTodosShown = !isTodosShown;
+        this.isTodosShown = !this.isTodosShown;
     }
 
     const getIsTodosShown = function(){
-        return isTodosShown;
+        return this.isTodosShown;
     }
 
-    return {
-        name,
-        todoArray,
-        isTodosShown,
-        updateCompleteBasedOnTodos,
+    return{
         sortTodos,
         getTodo,
         addTodo,
         removeTodo,
         getTodoArray,
-        ...completeToggleable,
         toggleShowTodos,
         getIsTodosShown,
     }
 }
 
-const projectMethodDelegate {
+const attachProjectMethods = function(partial){
+    const methods = projectMethodDelegate();
 
+    return {
+        ...methods,
+        ...partial,
+    }
 }
 
-export {createProject};
+export {createProject, attachProjectMethods};
