@@ -91,9 +91,24 @@ const storageManager = function () {
         }
     }
 
+    const removeProjectOrTodo = function(object){
+        if (!checkStorageAvailable){
+            return;
+        }
+        const projects = pageManager.getProjectsAndNakedTodos().projects;
+        const todos = pageManager.getProjectsAndNakedTodos().todosWithoutProject;
+        const projectIndex = projects.indexOf(object);
+        const todoIndex = todos.indexOf(object);
+        if (projectIndex !== -1){
+            localStorage.removeItem(`project${projectIndex}`);
+        } else {
+            localStorage.removeItem(`todo${todoIndex}`);
+        }
+    }
+
     return {
         setAllProjectsAndTodos, setProjectOrTodo,
-        getProjectsAndTodosFromStorage,
+        getProjectsAndTodosFromStorage, removeProjectOrTodo
     }
 
 

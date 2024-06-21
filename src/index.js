@@ -22,6 +22,8 @@ const pageManager = function(){
         if (index >= 1){
             renderManager.swapNodeElements(projectAndChildNode, projectAndChildNode.previousElementSibling);
             swapArrayElements(projects, index-1, index);
+            storageManager.setProjectOrTodo(projects[index]);
+            storageManager.setProjectOrTodo(projects[index-1]);
         } else{
             console.log("This project is as high as it can be!");
         }
@@ -36,10 +38,13 @@ const pageManager = function(){
         if (index < projects.length-1){
             renderManager.swapNodeElements(projectAndChildNode, projectAndChildNode.nextElementSibling);
             swapArrayElements(projects, index, index+1);
+            storageManager.setProjectOrTodo(projects[index]);
+            storageManager.setProjectOrTodo(projects[index+1]);
         } else{
             console.log("This project is as low as it can be!");
         }
         event.stopPropagation();
+        storageManager.setAllProjectOrTodo(project);
     }
 
     const swapArrayElements = function(array, index1, index2){
@@ -64,6 +69,7 @@ const pageManager = function(){
     const removeTodoFromProject = function(project, todo){
         project.removeTodo(todo);
         todosWithoutProject.push(todo);
+        storageManager.setProjectOrTodo(project);
     }
 
     const toggleOpenCloseProjectTab = function(projectAndChildTodosAreaNode){
@@ -80,6 +86,7 @@ const pageManager = function(){
             renderManager.clearProjectChildTodos(projectAndChildTodosAreaNode);
             projectBar.classList.remove("open");
         }
+        storageManager.setProjectOrTodo(projectObject);
     }
 
     const processNewTodoFormSubmit = function(event, formElement){
@@ -104,8 +111,8 @@ const pageManager = function(){
                 projectToAddTo = projects[projectToAddToIndex];
             }
             const newTodo = createAndAddTodo(projectToAddTo,name,description,dueDate,priority, ...checklistValuesWithNoBlanks);
-            sortNakedTodos();
             if (projectToAddTo == null){
+                sortNakedTodos();
                 const indexToAddTo = todosWithoutProject.indexOf(newTodo);
                 const newTodoNode = renderManager.appendNewTodoAtIndex(newTodo, indexToAddTo);
                 renderManager.bindTodoBar(newTodoNode);
@@ -115,12 +122,14 @@ const pageManager = function(){
                 renderManager.bindTodoBar(newTodoNode);
             }
             renderManager.closeNewTodoFormDialog();
+            storageManager.setAllProjectsAndTodos();
         }
     }
 
     const processNewProject = function(){
         const newProjectObject = createAndAddProject("New Project (rename me!)");
         const newNode = renderManager.renderAndBindNewProject(newProjectObject);
+        storageManager.setProjectOrTodo(newProjectObject);
     }
     
     const processEditNameForm = function(event, formElement){
@@ -131,14 +140,16 @@ const pageManager = function(){
         todoOrProjectObject.name = name;
         renderManager.displayIcons(formElement.parentNode.parentNode);
         renderManager.closeEditNameForm();
+        storageManager.setProjectOrTodo(todoOrProjectObject);
     }
 
     const processDeleteFormSubmit = function(event, deleteForm){
         event.preventDefault();
         const indexOfProjectToRemove = deleteForm.querySelector(".project.selection").value;
+        let removedObject;
         if (indexOfProjectToRemove >=0){
-            const removedProject = projects.splice(indexOfProjectToRemove, 1);
-            console.log(removedProject.name + " is deleted");
+            removedObject = projects.splice(indexOfProjectToRemove, 1);
+            console.log(removedObject.name + " is deleted");
             renderManager.removeTab(indexOfProjectToRemove);
         }
         const todoSelectionNode = deleteForm.querySelector(".todo.selection");
@@ -148,15 +159,16 @@ const pageManager = function(){
         console.log("Indexes for delete: " + indexOfOptgroupSelected + " " + indexOfTodoToRemove)
         if (indexOfOptgroupSelected !== -1 && indexOfTodoToRemove >=0 ){
             const projectToRemoveFrom = projects[indexOfOptgroupSelected];
-            const removedTodo = projectToRemoveFrom.getTodoArray().splice(indexOfTodoToRemove, 1)[0];
+            removedObject = projectToRemoveFrom.getTodoArray().splice(indexOfTodoToRemove, 1)[0];
             renderManager.removeTab(indexOfOptgroupSelected, indexOfTodoToRemove);
-            console.log(`${removedTodo.name} from ${projectToRemoveFrom.name} is removed`);
+            console.log(`${removedObject.name} from ${projectToRemoveFrom.name} is removed`);
         } else if (indexOfOptgroupSelected == -1 && indexOfTodoToRemove >=0 ){
-            const removedTodo = todosWithoutProject.splice(indexOfTodoToRemove, 1)[0];
+            removedObject = todosWithoutProject.splice(indexOfTodoToRemove, 1)[0];
             renderManager.removeTab(null, indexOfTodoToRemove);
-            console.log(`${removedTodo.name} from todos without projects is removed`);
+            console.log(`${removedObject.name} from todos without projects is removed`);
         }
         renderManager.closeDeleteDialog();
+        storageManager.removeProjectOrTodo(removedObject);
     }
 
     // use parameter project = null if you want the todo to have no project
@@ -171,12 +183,14 @@ const pageManager = function(){
         } else{
             todosWithoutProject.push(todo);
         }
+        storageManager.setProjectOrTodo(todo);
         return todo;
     }
 
     const createAndAddProject = function(name){
         const createdProject = createProject(name);
         projects.push(createdProject);
+        storageManager.setProjectOrTodo(createdProject);
         return createdProject;
     }
 
@@ -197,6 +211,7 @@ const pageManager = function(){
         createAndAddTodo(testProject, "Add ability to edit existing todos", "Existing todos should be able to be deleted. Their names and checklist status should also be able to be edited. All of this information should be properly stored, not just rendered on the DOM directly.", "2024-06-23", 3, );
         const testProject2 = createAndAddProject("Woodworking Project");
         createAndAddTodo(testProject2,"Brainstorm something to make", "Try to create a basic concept sketch of the next project to make. Concept sketch should have multiple perspectives and some close-up diagrams of any key mechanical parts.", "2024-07-04", 3, "Research inspiration ideas", "Check my current supplies");
+        storageManager.setAllProjectsAndTodos();
     }
 
     return {getProjectsAndNakedTodos, createAndAddTodo, createAndAddProject,
