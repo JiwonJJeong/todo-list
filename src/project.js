@@ -52,6 +52,8 @@ function createProject(name) {
 
     return {
         name,
+        todoArray,
+        isTodosShown,
         updateCompleteBasedOnTodos,
         sortTodos,
         getTodo,

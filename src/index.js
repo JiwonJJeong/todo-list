@@ -101,6 +101,7 @@ const pageManager = function(){
             const priority = formElement.elements.priority.value;
             const checklists = formElement.elements.checklist.value;
             const checklistsArray = [...checklists];
+            console.log(checklistsArray);
             const checklistValuesWithNoBlanks = checklistsArray
                         .map((checklist)=>checklist.value)
                         .filter((value) => value !== "");
@@ -180,10 +181,12 @@ const pageManager = function(){
             }
             moveTodoToProject(project, todo);
             project.sortTodos();
+            storageManager.setProjectOrTodo(project);
         } else{
             todosWithoutProject.push(todo);
+            storageManager.setProjectOrTodo(todo);
         }
-        storageManager.setProjectOrTodo(todo);
+
         return todo;
     }
 
@@ -198,12 +201,14 @@ const pageManager = function(){
         const projectsAndTodos = storageManager.getProjectsAndTodosFromStorage();
         projects = projectsAndTodos.projects;
         todosWithoutProject = projectsAndTodos.todos;
-        if (projects.length == 0 && todosWithoutProject.length == 0){
+        if (projects == undefined && todosWithoutProject == undefined){
             addExampleTodosandProjects();
         }
     }
 
     const addExampleTodosandProjects = function(){
+        projects = [];
+        todosWithoutProject = [];
         createAndAddTodo(null, "Drive mom to airport", "This is a high priority task! Make sure to drop mom off at ABC airport Terminal 1.", "2024-07-10", 3, "Check-in for flight", "Pick up mom at 8:00 AM");
         createAndAddTodo(null, "Buy new camping gear", "This is a low priority task. Prepare extra supplies for Mount Awesome hiking trip with the boys.", "2024-11-27", 1, "Buy new water bottle", "Buy more climbing rope", "Pack new stuff into camping bag");
         const testProject = createAndAddProject("TOP Todo List Project");
@@ -226,8 +231,5 @@ const pageManager = function(){
 
 pageManager.init();
 renderManager.init();
-
-console.log(pageManager.getProjectsAndNakedTodos());
-console.log(pageManager.getProjectsAndNakedTodos().projects[0].getTodoArray());
 
 export {pageManager};

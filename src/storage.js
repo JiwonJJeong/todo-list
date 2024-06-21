@@ -1,9 +1,11 @@
 // this module is for working with localStorage to store data //
-import {pageManager} from "./index.js";
+import { pageManager } from "./index.js";
+import { createProject } from "./project.js";
+import { createTodo } from "./todo.js";
 
 const storageManager = function () {
-    let projects;
-    let todos;
+    let projects = [];
+    let todos = [];
 
     const storageAvailable = function (type) {
         let storage;
@@ -32,74 +34,125 @@ const storageManager = function () {
         }
     }
 
-    const checkStorageAvailable = function(){
+    const checkStorageAvailable = function () {
         return Boolean(storageAvailable("localStorage"));
     }
 
-    const getProjectsAndTodosFromStorage = function(){
-        if (!checkStorageAvailable){
+    const getProjectsAndTodosFromStorage = function () {
+        return { projects, todos };
+        const partialProjectsAndTodos = getPartialProjectsAndTodos();
+        for (let partialProject of partialProjectsAndTodos.partialProjects){
+            //projects.push(createProject(partialProject.))
+        }
+        return { projects, todos };
+    }
+
+    const getPartialProjectsAndTodos = function () {
+        let partialProjects = [];
+        let partialTodos = [];
+        if (!checkStorageAvailable) {
             return;
         }
         let i = 0;
         let projectFromStorage = localStorage.getItem(`project${i}`);
-        while (projectFromStorage !== null){
-            projects.push(JSON.parse(projectFromStorage));
+        while (projectFromStorage !== null) {
+            partialProjects.push(JSON.parse(projectFromStorage));
         }
         i = 0;
         let todoFromStorage = localStorage.getItem(`todo${i}`);
-        while (todoFromStorage !== null){
-            todos.push(JSON.parse(todoFromStorage));
+        while (todoFromStorage !== null) {
+            partialTodos.push(JSON.parse(todoFromStorage));
         }
-        return {projects, todos};
+        return {partialProjects, partialTodos}
     }
 
-    const reassignMethodsToObjectsFromStorage = function(){
-        for (let project of projects){
-
-        }
-        for (let todo of todos){
-
-        }
-    }
-
-    const setAllProjectsAndTodos = function(){
-        if (!checkStorageAvailable){
+    const setAllProjectsAndTodos = function () {
+        if (!checkStorageAvailable) {
             return;
         }
         const projects = pageManager.getProjectsAndNakedTodos().projects;
         const todos = pageManager.getProjectsAndNakedTodos().todosWithoutProject;
-        for (let project of projects){
+        for (let project of projects) {
             setProjectOrTodo(project);
         }
-        for (let todo of todos){
+        for (let todo of todos) {
             setProjectOrTodo(todo);
         }
     }
 
-    const setProjectOrTodo = function(object){
-        if (!checkStorageAvailable){
+    const setProjectOrTodo = function (object) {
+        if (!checkStorageAvailable) {
             return;
         }
+        let finalJSON;
         const projects = pageManager.getProjectsAndNakedTodos().projects;
         const todos = pageManager.getProjectsAndNakedTodos().todosWithoutProject;
         const projectIndex = projects.indexOf(object);
         const todoIndex = todos.indexOf(object);
-        if (projectIndex !== -1){
-            localStorage.setItem(`project${projectIndex}`, JSON.stringify(object));
+        if (projectIndex !== -1) {
+            finalJSON = stringifyProject(object);
+            localStorage.setItem(`project${projectIndex}`, finalJSON);
         } else {
-            localStorage.setItem(`todo${todoIndex}`, JSON.stringify(object));
+            finalJSON = stringifyTodo(object);
+            localStorage.setItem(`todo${todoIndex}`, finalJSON);
         }
     }
 
-    const removeProjectOrTodo = function(object){
-        if (!checkStorageAvailable){
+    const stringifyProject = function(projectObject){
+        let projectJSON = JSON.stringify(projectObject);
+        for (let todo of projectObject.getTodoArray()){
+            const todoJSON = stringifyTodo(todo);
+            projectJSON = insertTodoJSON(todoJSON, projectJSON);
+        }
+        return projectJSON;
+    }
+
+    const stringifyTodo = function(todoObject){
+        const initialJSON = JSON.stringify(todoObject);
+        const checklistJSON = stringifyChecklist(todoObject);
+        const finalTodoJSON = insertChecklistJSON(checklistJSON, initialJSON);
+        return finalTodoJSON;
+    }
+
+    const stringifyChecklist = function(todoObject){
+        let JSONstring = "";
+        const checklistArray = todoObject.getChecklistArray();
+        for (let checklist of checklistArray){
+            JSONstring += `"${JSON.stringify(checklist)}", `;
+        }
+        if (JSONstring.length > 0){
+            JSONstring.slice(-2);
+        }
+        return JSONstring;
+    }
+
+    const insertTodoJSON = function(todoJSON, initialJSON){
+        const indexOfTodoArrayKey = initialJSON.indexOf("todoArray");
+        const indexToAddTo = indexOfTodoArrayKey + ('todoArray":[');
+        const insertedJSON = initialJSON.substring(0,indexToAddTo)
+                        + todoJSON
+                        + initialJSON.substring(indexToAddTo);
+        return insertedJSON;
+    }
+
+    const insertChecklistJSON = function(checklistArrayJSON, initialJSON){
+        const indexOfChecklistArrayKey = initialJSON.indexOf("checklistArray");
+        const indexToAddTo = indexOfChecklistArrayKey + ('checklistArray":[').length;
+        const insertedJSON = initialJSON.substring(0,indexToAddTo)
+                        + checklistArrayJSON
+                        + initialJSON.substring(indexToAddTo);
+        return insertedJSON;
+    }
+
+    const removeProjectOrTodo = function (object) {
+        if (!checkStorageAvailable) {
             return;
         }
         const projects = pageManager.getProjectsAndNakedTodos().projects;
         const todos = pageManager.getProjectsAndNakedTodos().todosWithoutProject;
         const projectIndex = projects.indexOf(object);
         const todoIndex = todos.indexOf(object);
-        if (projectIndex !== -1){
+        if (projectIndex !== -1) {
             localStorage.removeItem(`project${projectIndex}`);
         } else {
             localStorage.removeItem(`todo${todoIndex}`);
@@ -114,4 +167,4 @@ const storageManager = function () {
 
 }();
 
-export {storageManager};
+export { storageManager };

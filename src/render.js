@@ -168,7 +168,10 @@ const renderManager = function () {
     const renderAndBindNewProject = function(projectToDisplay){
         const projectBarNode = composeProjectAndChildTodosTab(projectToDisplay);
         const projectAndChildTodoNodes = sidebar.querySelectorAll(".project-and-child-todo.area");
-        const lastProjectBarNodeToAppendAfter = projectAndChildTodoNodes[projectAndChildTodoNodes.length-1];
+        let lastProjectBarNodeToAppendAfter = projectAndChildTodoNodes[projectAndChildTodoNodes.length-1];
+        if (lastProjectBarNodeToAppendAfter == undefined){
+            lastProjectBarNodeToAppendAfter = sidebar.querySelector(".new-button.container");
+        }
         lastProjectBarNodeToAppendAfter.after(projectBarNode);
         bindProjectAndChildTodosBar(projectBarNode);
         bindUpDownIcons(projectBarNode)
@@ -212,6 +215,9 @@ const renderManager = function () {
             todoNodeToInsertBefore.parentNode.insertBefore(todoTabNode, todoNodeToInsertBefore);
         } else {
             let todoNodeToInsertAfter = todoNodeList[index-1];
+            if (todoNodeToInsertAfter == undefined){
+                todoNodeToInsertAfter = sidebar.querySelector(".new-button.container")
+            }
             todoNodeToInsertAfter.after(todoTabNode);
         }
         console.log(todoNodeToInsertBefore, todoNodeList, index);

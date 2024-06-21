@@ -32,13 +32,13 @@ function createTodo (name,description,dueDate,priority,...checklistDescriptions)
         checklistArray.pop(checklistToRemove);
     }
 
-
     return {
         name,
         description,
         dueDate,
         priority,
         isComplete,
+        checklistArray,
         getChecklistArray,
         addChecklist,
         removeChecklist,
