@@ -320,12 +320,10 @@ const renderManager = function () {
     const composeDefaultContent = function(){
         const contentArea = createElement("div", "content area");
         const defaultText = createElement("p", "default text", "Let's get started! Choose a todo.");
-        const defaultSubText = createElement("p", "default-sub text", "Or create one!");
-        const defaultAddTodoButton = createElement("button", "add-todo button", "+");
+        const defaultAddTodoButton = createElement("button", "add-todo button", "Or create one!");
         const defaultHelplistHeader = createElement("p","help header","Need help? Check out these functions: ");
         const defaultHelpList = composeHelpList();
         contentArea.appendChild(defaultText);
-        contentArea.appendChild(defaultSubText);
         contentArea.appendChild(defaultAddTodoButton);
         contentArea.append(defaultHelplistHeader, defaultHelpList);
         return contentArea;

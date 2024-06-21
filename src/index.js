@@ -180,13 +180,13 @@ const pageManager = function(){
     }
 
     const addExampleTodosandProjects = function(){
-        createAndAddTodo(null, "Drive mom to airport", "This todo has no project and is high priority!", "Test dueDate", 3, "Check-in for flight", "Pick up mom at 8:00 AM");
-        createAndAddTodo(null, "Buy new camping gear", "This todo has no project and is low priority.", "Test dueDate", 1, "Buy new water bottle", "Buy more climbing rope", "Pack new stuff into camping bag");
+        createAndAddTodo(null, "Drive mom to airport", "This is a high priority task! Make sure to drop mom off at ABC airport Terminal 1.", "2024-07-10", 3, "Check-in for flight", "Pick up mom at 8:00 AM");
+        createAndAddTodo(null, "Buy new camping gear", "This is a low priority task. Prepare extra supplies for Mount Awesome hiking trip with the boys.", "2024-11-27", 1, "Buy new water bottle", "Buy more climbing rope", "Pack new stuff into camping bag");
         const testProject = createAndAddProject("TOP Todo List Project");
-        createAndAddTodo(testProject, "Stylize with CSS", "Use flexbox and grid to layout elements! Also mess with some pseudoclasses to make some interactive buttons! After having a good layout, everything else like color or font is for fun!", "Test dueDate", 1, "Center elements", "Stylize buttons and pseudoclasses", "Stylize form inputs", "Add icons", "Choose color palette");
-        createAndAddTodo(testProject, "Add ability to edit existing todos", "This todo has a project.", "Test dueDate", 3, );
+        createAndAddTodo(testProject, "Stylize with CSS", "Use flexbox and grid to layout elements! Also mess with some pseudoclasses to make some interactive buttons! After having a good layout, everything else like color or font is for fun!", "2024-06-29", 1, "Center elements", "Stylize buttons and pseudoclasses", "Stylize form inputs", "Add icons", "Choose color palette");
+        createAndAddTodo(testProject, "Add ability to edit existing todos", "Existing todos should be able to be deleted. Their names should also be able to be edited. All of this information should be properly stored, not just rendered on the DOM directly.", "2024-06-23", 3, );
         const testProject2 = createAndAddProject("Woodworking Project");
-        createAndAddTodo(testProject2,"Brainstorm something to make", "This todo has a project and should be shown on default", "Test dueDate", 3, "Research inspiration ideas", "Check my current supplies");
+        createAndAddTodo(testProject2,"Brainstorm something to make", "Try to create a basic concept sketch of the next project to make. Concept sketch should have multiple perspectives and some close-up diagrams of any key mechanical parts.", "2024-07-04", 3, "Research inspiration ideas", "Check my current supplies");
     }
 
     return {getProjectsAndNakedTodos, createAndAddTodo, createAndAddProject,
