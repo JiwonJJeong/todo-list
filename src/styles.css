@@ -39,9 +39,19 @@ body{
     border-radius: 10px;
 }
 
+/* stylize header */
+
 .header.area{
     grid-column: 1/3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    .header.logo{
+        font-family:Georgia, 'Times New Roman', Times, serif;
+    }
 }
+
 
 /* stylize sidebar area*/
 .sidebar.area{
