@@ -28,22 +28,12 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     margin-top: 10vh;
     gap: 10px;
-    font-family: Helvetica, Arial, sans-serif
+    font-family: Helvetica, Arial, sans-serif;
 }
 
-/* stylize all tiny circular buttons */
-.help.button{
-    aspect-ratio: 1/1;
-    border-radius: 60%;
-    border: none;
-    width: 25px;
-}
-
-.help.button {
-    align-self: flex-end;
-}
 
 /* section and style page into 3 main sections */
 
@@ -62,13 +52,24 @@ body {
 .header.area {
     grid-column: 1/3;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: flex-end;
 
     .header.logo {
         font-family: "Cartoon";
         font-size: 40px;
+        flex-grow:1;
+        text-align: center;
     }
+
+    .help.button{
+        aspect-ratio: 1/1;
+        border-radius: 60%;
+        width: 25px;
+        margin: 10px;
+        align-self: flex-start;
+    }
+    
 }
 
 

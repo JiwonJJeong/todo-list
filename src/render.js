@@ -6,9 +6,9 @@ import downIcon from "./images/menu-down.svg"
 const renderManager = function () {
 
     const init = function () {
-        renderHelpButton();
         renderBaseBackground();
         renderHeader();
+        renderHelpButton();
         renderSidebar();
         renderDefaultContent();
         prerenderDialogs();
@@ -67,8 +67,7 @@ const renderManager = function () {
     // functions related to displaying and rendering
     const renderHelpButton = function(){
         const helpButton = createElement("button","help button","?");
-        const body = document.querySelector("body");
-        body.appendChild(helpButton);
+        header.appendChild(helpButton);
     }
 
     let baseBackground;
