@@ -1,7 +1,7 @@
 // this module is for working with localStorage to store data //
 import {pageManager} from "./index.js";
 
-const dataManager = function () {
+const storageManager = function () {
     let projects;
     let todos;
 
@@ -50,6 +50,7 @@ const dataManager = function () {
         while (todoFromStorage !== null){
             todos.push(JSON.parse(todoFromStorage));
         }
+        return {projects, todos};
     }
 
     const reassignMethodsToObjectsFromStorage = function(){
@@ -92,8 +93,10 @@ const dataManager = function () {
 
     return {
         setAllProjectsAndTodos, setProjectOrTodo,
-
+        getProjectsAndTodosFromStorage,
     }
 
 
 }();
+
+export {storageManager};
