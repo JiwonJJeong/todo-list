@@ -223,3 +223,80 @@ dialog.delete.dialog form{
         padding: 5px;
     }
 }
+
+dialog.new.todo.dialog form{
+    display:flex;
+    flex-direction: column;
+    gap: 10px;
+
+    > *{
+        display: grid;
+        grid-template-columns: 110px 1fr;
+        gap: 10px;
+    }
+
+    select, input {
+        padding: 5px;
+    }
+
+    label, p{
+        align-self: center;
+    }
+
+    .priority.question.area{
+        display:flex;
+        justify-content: space-between;
+
+        .container{
+            align-self: center;
+            display: grid;
+            grid-template-columns: max-content 1fr;
+            gap: 2px;
+            margin-right: 100px;
+        }
+    }
+
+    .description label{
+        align-self:flex-start;
+    }
+
+    textarea{
+        min-width: 237.25px;
+        max-width: 577px;
+        padding: 5px;
+    }
+
+    .checklist.question.area{
+        div.checklist{
+            grid-column: 2/3;
+            display: flex;
+            gap: 10px;
+        }
+        input {
+            width: 100%;
+        }
+        label{
+            text-align:end;
+        }
+        .add.checklist.button{
+            grid-row: -1/0;
+            grid-column: 2/3;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            border: 1px solid rgb(54, 54, 54);
+            padding: 5px;
+            justify-self: flex-end;
+        }
+    }
+
+    .container{
+        grid-column: 2/3;
+        display: flex;
+        gap: 20px;
+        justify-content: flex-end;
+    }
+
+    .container .button{
+        padding: 5px;
+    }
+}

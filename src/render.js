@@ -34,8 +34,13 @@ const renderManager = function () {
         const label = document.createElement("label");
         label.innerText = labelText;
         label.for = id;
-        const input = document.createElement("input");
-        input.type = type;
+        let input;
+        if (type === "textarea"){
+            input = document.createElement("textarea");
+        } else{
+            input = document.createElement("input");
+            input.type = type;
+        }
         input.id = id;
         input.name = id;
         if (value !== undefined && value !== null) {
@@ -387,6 +392,7 @@ const renderManager = function () {
     const closeNewTodoFormDialog = function () {
         newTodoFormDialog.querySelector("form").reset();
         resetChecklistFieldsToOne();
+        resetSizeOfTextarea();
         newTodoFormDialog.close();
     }
 
@@ -397,36 +403,38 @@ const renderManager = function () {
         for (let element of todoFormElementsArray) {
             todoForm.appendChild(element);
         }
+        const buttonContainer = createElement("div","button container");
         const submitButton = createElement("input", "submit button", "Submit");
         submitButton.type = "submit";
         const cancelButton = createElement("button" ,"cancel button", "Cancel");
         cancelButton.type = "button";
-        todoForm.appendChild(submitButton);
-        todoForm.appendChild(cancelButton);
+        buttonContainer.append(cancelButton,submitButton);
+        todoForm.appendChild(buttonContainer);
         todoFormDialog.appendChild(todoForm);
         return todoFormDialog;
     }
 
     const composeTodoFormElements = function () {
-        const nameFields = composeContainedFieldElement(createLabelAndInput("name", "text", "Title*", null, true, 40));
-        const descriptionFields = composeContainedFieldElement(createLabelAndInput("description", "text", "Description"));
-        const dueDateFields = composeContainedFieldElement(createLabelAndInput("dueDate", "date", "Due Date"));
+        const nameFields = composeContainedFieldElement(createLabelAndInput("name", "text", "Title*:", null, true, 40));
+        const descriptionFields = composeContainedFieldElement(createLabelAndInput("description", "textarea", "Description:"));
+        const dueDateFields = composeContainedFieldElement(createLabelAndInput("dueDate", "date", "Due Date:"));
         const priorityQuestion = composePriorityRadioInput();
         const projectFieldQuestion = composeProjectSelectInput();
         const checklistQuestion = composeChecklistInputArea();
-        return { nameFields, descriptionFields, dueDateFields, priorityQuestion, projectFieldQuestion, checklistQuestion };
+        return { nameFields, dueDateFields, priorityQuestion, projectFieldQuestion, descriptionFields, checklistQuestion };
     }
 
     const composePriorityRadioInput = function () {
         const priorityQuestionContainer = createElement("div", "priority question area");
-        const priorityRadioQuestionText = createElement("p", "priority text", "Priority*");
+        const priorityRadioQuestionText = createElement("p", "priority text", "Priority*:");
+        const radioContainer = createElement("div","container");
         const priorityHighRadioFields = createLabelAndInput("priority", "radio", "High", 3, true);
         const priorityMediumRadioFields = createLabelAndInput("priority", "radio", "Medium", 2);
         const priorityLowRadioFields = createLabelAndInput("priority", "radio", "Low", 1);
-        priorityQuestionContainer.append(priorityRadioQuestionText,
-            priorityHighRadioFields.input, priorityHighRadioFields.label,
+        radioContainer.append(priorityHighRadioFields.input, priorityHighRadioFields.label,
             priorityMediumRadioFields.input, priorityMediumRadioFields.label,
             priorityLowRadioFields.input, priorityLowRadioFields.label);
+        priorityQuestionContainer.append(priorityRadioQuestionText,radioContainer);
         return priorityQuestionContainer;
     }
 
@@ -484,6 +492,12 @@ const renderManager = function () {
         for (let i = 1; i<checklists.length; i++){
             checklistArea.removeChild(checklists[i]);
         }
+    }
+
+    const resetSizeOfTextarea = function(){
+        const textarea = newTodoFormDialog.querySelector("textarea");
+        textarea.style.width = "374px";
+        textarea.style.height = "123px";
     }
 
     // code for delete dialog
