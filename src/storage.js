@@ -14,6 +14,7 @@ const storageManager = function () {
             localStorage.setItem(test, test);
             localStorage.removeItem(test);
             console.log("local storage available");
+            console.log(localStorage);
             return true;
         } catch (e) {
             console.log("local storage unavailable");
@@ -101,11 +102,19 @@ const storageManager = function () {
         if (!isStorageAvailable) {
             return;
         }
+        setAllProjects();
+        setAllTodos();
+    }
+
+    const setAllProjects = function(){
         const projects = pageManager.getProjectsAndNakedTodos().projects;
-        const todos = pageManager.getProjectsAndNakedTodos().todosWithoutProject;
         for (let project of projects) {
             setProjectOrTodo(project);
         }
+    }
+
+    const setAllTodos = function(){
+        const todos = pageManager.getProjectsAndNakedTodos().todosWithoutProject;
         for (let todo of todos) {
             setProjectOrTodo(todo);
         }
@@ -117,15 +126,17 @@ const storageManager = function () {
         }
         let finalJSON;
         const projects = pageManager.getProjectsAndNakedTodos().projects;
-        const todos = pageManager.getProjectsAndNakedTodos().todosWithoutProject;
         const projectIndex = projects.indexOf(object);
-        const todoIndex = todos.indexOf(object);
         if (projectIndex !== -1) {
             finalJSON = stringifyProject(object);
             localStorage.setItem(`project${projectIndex}`, finalJSON);
+            console.log(`Local storage updated project${projectIndex}`)
         } else {
+            const todos = pageManager.getProjectsAndNakedTodos().todosWithoutProject;
+            const todoIndex = todos.indexOf(object);
             finalJSON = stringifyTodo(object);
             localStorage.setItem(`todo${todoIndex}`, finalJSON);
+            console.log(`Local storage updated project${projectIndex}`)
         }
     }
 
@@ -173,19 +184,15 @@ const storageManager = function () {
         return insertedJSON;
     }
 
-    const removeProjectOrTodo = function (object) {
+    const removeProjectOrTodo = function (objectIndex) {
         if (!isStorageAvailable) {
             return;
         }
-        const projects = pageManager.getProjectsAndNakedTodos().projects;
-        const todos = pageManager.getProjectsAndNakedTodos().todosWithoutProject;
-        const projectIndex = projects.indexOf(object);
-        const todoIndex = todos.indexOf(object);
-        if (projectIndex !== -1) {
-            localStorage.removeItem(`project${projectIndex}`);
-        } else {
-            localStorage.removeItem(`todo${todoIndex}`);
-        }
+        console.log(`trying to remove ${objectIndex}`);
+        localStorage.clear();
+        setAllProjectsAndTodos();
+        console.log(`StorageManager has updated to ${localStorage}`);
+        console.log(localStorage);
     }
 
     return {
