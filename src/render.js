@@ -366,12 +366,12 @@ const renderManager = function () {
 
     const composeHelpList = function(){
         const list = createElement("ul","help list");
-        const helpFunction1 = createElement("li",null,"Click the 'Menu Options' button.");
-        const helpFunction2 = createElement("li",null,"Click on a project tab.");
-        const helpFunction3 = createElement("li",null,"Click the up/down icons.");
-        const helpFunction4 = createElement("li",null,"Secondary click on any side tab.");
-        const helpFunction5 = createElement("li",null,"Click on a checkbox inside a todo.");
-        const helpFunction6 = createElement("li",null,"Try refreshing the page to test local data storage!");
+        const helpFunction1 = createElement("li",null,"Click 'Menu Options'.");
+        const helpFunction2 = createElement("li",null,"Open a project folder.");
+        const helpFunction3 = createElement("li",null,"Click up/down icons.");
+        const helpFunction4 = createElement("li",null,"Right click a tab.");
+        const helpFunction5 = createElement("li",null,"Click a checkbox.");
+        const helpFunction6 = createElement("li",null,"Refresh the page! (local storage)");
         list.append(helpFunction1, helpFunction2, helpFunction3, helpFunction4, helpFunction5, helpFunction6);
         return list;
     }
